@@ -1,6 +1,6 @@
 import type React from 'react';
 import { useGameStore } from '~/store/gameStore';
-import "./LifeBar.css";
+import './LifeBar.css';
 
 const LifeBar: React.FC = () => {
   const { gender, age } = useGameStore();
