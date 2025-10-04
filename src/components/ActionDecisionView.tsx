@@ -1,0 +1,169 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { Card } from '~/components/ui/card';
+
+export interface GameAction {
+  name: string;
+  description: string;
+  image_url: string;
+  parameter_change: {
+    career: number;
+    relations: number;
+    health: number;
+    money: number;
+  };
+  time_cost: number;
+}
+
+export function ActionDecisionView({
+  actions,
+  availableTime,
+  title,
+  onActionSelected,
+  allowSkip = false,
+}: {
+  actions: GameAction[];
+  availableTime: number;
+  title: string;
+  onActionSelected: (action: GameAction | null) => void;
+  allowSkip?: boolean;
+}) {
+  const [selectedAction, setSelectedAction] = useState<GameAction | null>(null);
+  const [isConfirming, setIsConfirming] = useState(false);
+  const [isShatteringView, setIsShatteringView] = useState(false);
+  const [cardsExpanded, setCardsExpanded] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setCardsExpanded(true);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleConfirm = () => {
+    if (!selectedAction) return;
+
+    setIsConfirming(true);
+    setIsShatteringView(true);
+
+    setTimeout(() => {
+      onActionSelected(selectedAction);
+    }, 100);
+  };
+
+  const handleSkip = () => {
+    setIsConfirming(true);
+    setIsShatteringView(true);
+
+    setTimeout(() => {
+      onActionSelected(null);
+    }, 500);
+  };
+
+  return (
+    <div className='min-h-screen bg-gradient-to-br from-indigo-950 via-purple-950 to-pink-950 p-6'>
+      {/* Animated background */}
+      <div className='pointer-events-none fixed inset-0 overflow-hidden'>
+        {[...Array(30)].map((_, i) => (
+          <div
+            key={i}
+            className='absolute h-1 w-1 animate-pulse rounded-full bg-purple-500/20'
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${2 + Math.random() * 4}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      <div className='relative z-10 mx-auto max-w-7xl'>
+        {/* Header */}
+        <div className='fade-in mb-8 animate-in text-center duration-700'>
+          <h2 className='mb-4 bg-gradient-to-r from-purple-200 via-pink-200 to-purple-200 bg-clip-text font-bold text-5xl text-transparent'>
+            {title}
+          </h2>
+          <div className='flex items-center justify-center gap-4'>
+            <div className='flex items-center gap-2 rounded-full border-2 border-purple-500 bg-purple-900/40 px-6 py-3 backdrop-blur-sm'>
+              <span className='text-2xl'>⏱️</span>
+              <span className='font-bold text-white text-xl'>
+                {availableTime} godz. pozostało
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Action Cards */}
+        <div className='flex flex-wrap justify-center gap-6'>
+          {actions.map((action, idx) => {
+            const isSelected = selectedAction?.name === action.name;
+            const canAfford = availableTime >= action.time_cost;
+            const centerIndex = Math.floor(actions.length / 2);
+            const offsetFromCenter = idx - centerIndex;
+
+            return (
+              <div
+                key={action.name}
+                className={`transition-all duration-700 ease-out ${
+                  isShatteringView && !isSelected
+                    ? 'animate-[fadeOut_0.5s_ease-out_forwards]'
+                    : ''
+                }`}
+                style={{
+                  transform: cardsExpanded
+                    ? 'translateX(0)'
+                    : `translateX(${-offsetFromCenter * 240}px) scale(0.8)`,
+                  opacity: cardsExpanded ? 1 : 0.5,
+                  animationDelay: isShatteringView ? `${idx * 0.1}s` : '0s',
+                  transitionDelay: cardsExpanded
+                    ? `${Math.abs(offsetFromCenter) * 0.08}s`
+                    : '0s',
+                }}
+              >
+                <Card
+                  key={`${action.name}-${idx}`}
+                  requiredTime={action.time_cost}
+                  imageUrl={action.image_url}
+                  description={action.name}
+                  parameterChanges={action.parameter_change}
+                  onClick={() =>
+                    canAfford && !isConfirming && setSelectedAction(action)
+                  }
+                  isSelected={isSelected}
+                  isDisabled={!canAfford || isConfirming}
+                  disabledReason={!canAfford ? 'Brak czasu!' : undefined}
+                />
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Action buttons */}
+        <div className='zoom-in -translate-x-1/2 fixed bottom-8 left-1/2 flex animate-in gap-4'>
+          {allowSkip && !isConfirming && (
+            <button
+              type='button'
+              onClick={handleSkip}
+              className='group relative overflow-hidden rounded-2xl border-2 border-purple-600 bg-transparent px-8 py-4 font-bold text-lg text-purple-300 shadow-[0_0_30px_rgba(168,85,247,0.3)] transition-all duration-300 hover:scale-105 hover:bg-purple-600/20'
+            >
+              Pomiń ⏭️
+            </button>
+          )}
+
+          {selectedAction && !isConfirming && (
+            <button
+              type='button'
+              onClick={handleConfirm}
+              className='group relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 px-12 py-4 font-bold text-2xl text-white shadow-[0_0_50px_rgba(168,85,247,0.6)] transition-all duration-300 hover:scale-110 hover:shadow-[0_0_80px_rgba(168,85,247,0.8)]'
+            >
+              <div className='absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-600 opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
+              <span className='relative z-10'>Potwierdzam wybór! 🎯</span>
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
