@@ -89,10 +89,11 @@ export function ActionDecisionView({
           return (
             <div
               key={action.name}
-              className={`transition-all duration-700 ease-out ${isShatteringView && !isSelected
-                ? 'animate-[fadeOut_0.5s_ease-out_forwards]'
-                : ''
-                }`}
+              className={`transition-all duration-700 ease-out ${
+                isShatteringView && !isSelected
+                  ? 'animate-[fadeOut_0.5s_ease-out_forwards]'
+                  : ''
+              }`}
               style={{
                 transform: cardsExpanded
                   ? 'translateX(0)'

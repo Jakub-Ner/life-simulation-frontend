@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { ActionDecisionView } from './ActionDecisionView';
 import NextPhaseArrow from './NextPhaseArrow';
 import TurnInitView from './TurnInitView';
 import AvatarsContainer from './avatars/AvatarsContainer';
 import LifeBar from './ui/LifeBar';
 import VerticalProgressBars from './ui/progress/progress-bars';
-import { ActionDecisionView } from './ActionDecisionView';
 import './GameplayView.css';
 import { useGameStore } from '~/store/gameStore';
 import type { GameAction } from './ActionDecisionView';
@@ -60,7 +60,7 @@ export function GameplayView() {
       setAvailableTime((prev) => prev - action.time_cost);
       gameState.updateTurnChoices({
         big_actions: [...gameState.turnChoices.big_actions, action],
-        small_actions: gameState.turnChoices.small_actions
+        small_actions: gameState.turnChoices.small_actions,
       });
     }
     setTimeout(() => {
@@ -76,7 +76,7 @@ export function GameplayView() {
       setAvailableTime(newAvailableTime);
       gameState.updateTurnChoices({
         big_actions: gameState.turnChoices.big_actions,
-        small_actions: [...gameState.turnChoices.small_actions, action]
+        small_actions: [...gameState.turnChoices.small_actions, action],
       });
     }
 
