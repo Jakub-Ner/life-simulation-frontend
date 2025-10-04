@@ -1,0 +1,3 @@
+
+echo "Executing pre-commit"
+npm run check:write
