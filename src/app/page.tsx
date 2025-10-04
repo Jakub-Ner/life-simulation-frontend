@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { GameplayView } from '~/components/GameplayView';
 import { LandingPage } from '~/components/LandingPage';
+import { OnboardingView } from '~/components/OnboardingView';
 
 type GamePhase = 'landing' | 'onboarding' | 'gameplay';
 
@@ -16,11 +18,17 @@ export default function HomePage() {
     setGamePhase('onboarding');
   };
 
+  const handleOnboardingComplete = () => {
+    setGamePhase('gameplay');
+  };
+
   return (
     <>
       {gamePhase === 'landing' && <LandingPage onStart={handleStartGame} />}
-      {gamePhase === 'onboarding' && <div>Onboarding phase (TODO)</div>}
-      {gamePhase === 'gameplay' && <div>Gameplay phase (TODO)</div>}
+      {gamePhase === 'onboarding' && (
+        <OnboardingView onComplete={handleOnboardingComplete} />
+      )}
+      {gamePhase === 'gameplay' && <GameplayView />}
     </>
   );
 }

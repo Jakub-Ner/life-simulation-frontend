@@ -54,11 +54,10 @@ export const useGameStore = create<GameStore>((set) => ({
     set({ isLoading: true, error: null });
 
     try {
-      const response = await fetch('http://your-backend-url/create-new-game', {
+      const response = await fetch('/api/create-new-game', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_X_API_KEY}`,
         },
         body: JSON.stringify({ gender, goal, name }),
       });

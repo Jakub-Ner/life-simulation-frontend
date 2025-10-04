@@ -28,7 +28,7 @@ export function LandingPage({ onStart }: { onStart: () => void }) {
 
         {/* Start Button */}
         <button
-          type="button"
+          type='button'
           onClick={onStart}
           className='rounded-lg bg-purple-600 px-12 py-4 font-bold text-white text-xl shadow-lg transition-all duration-300 hover:scale-105 hover:bg-purple-700 hover:shadow-2xl'
         >
