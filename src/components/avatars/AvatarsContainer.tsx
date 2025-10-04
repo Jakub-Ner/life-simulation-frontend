@@ -1,32 +1,29 @@
 import type React from 'react';
 import Avatar from './Avatar';
 import './avatars.css';
+import { useGameStore } from '../../store/gameStore';
 
 type Age = 'YOUNG' | 'ADULT' | 'OLD';
 type Gender = 'male' | 'female';
 type PositionKey = 'false-false' | 'true-false' | 'true-true' | 'false-true';
 
-interface AvatarsContainerProps {
-  age: Age;
-  gender: Gender;
-  isHappy: boolean;
-  isSick: boolean;
-  isSpouse: boolean;
-  hasChild: boolean;
-  size?: number;
-  isShadow?: boolean;
-}
+const AvatarsContainer: React.FC = () => {
+  const { current_stage, gender: genderFromStore } = useGameStore();
 
-const AvatarsContainer: React.FC<AvatarsContainerProps> = ({
-  age,
-  gender,
-  isHappy,
-  isSick,
-  isSpouse,
-  hasChild,
-  size = 320,
-  isShadow = false,
-}) => {
+  const ageMap: Record<number, Age> = {
+    1: 'YOUNG',
+    2: 'ADULT',
+    3: 'OLD',
+  };
+
+  const age = ageMap[current_stage] || 'YOUNG';
+  const gender = genderFromStore as Gender;
+  const isHappy = true;
+  const isSick = false;
+  const isSpouse = false;
+  const hasChild = false;
+  const size = 320;
+  const isShadow = false;
   const baseY = 40;
 
   // Matrix of X positions for [main, spouse, child], null if not applicable

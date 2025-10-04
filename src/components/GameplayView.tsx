@@ -2,6 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useGameStore } from '~/store/gameStore';
+import AvatarsContainer from './avatars/AvatarsContainer';
+import LifeBar from './ui/LifeBar';
+import VerticalProgressBars from './ui/progress/progress-bars';
+import './GameplayView.css';
 
 function StatBar({
   label,
@@ -89,7 +93,7 @@ function NextPhaseArrow({ onClick }: { onClick: () => void }) {
     <button
       type='button'
       onClick={onClick}
-      className='group fixed right-12 bottom-12 z-50 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-pink-600 shadow-[0_0_40px_rgba(168,85,247,0.6)] transition-all duration-300 hover:scale-110 hover:shadow-[0_0_60px_rgba(168,85,247,0.8)] active:scale-95'
+      className='group fixed bottom-5 left-70 z-50 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-pink-600 shadow-[0_0_40px_rgba(168,85,247,0.6)] transition-all duration-300 hover:scale-110 hover:shadow-[0_0_60px_rgba(168,85,247,0.8)] active:scale-95'
     >
       <div className='absolute inset-0 animate-ping rounded-full bg-purple-400 opacity-20' />
       <svg
@@ -116,12 +120,10 @@ function TurnInitView({
   description,
   age,
   stage,
-  onNext,
 }: {
   description: string;
   age: number;
   stage: number;
-  onNext: () => void;
 }) {
   const [textVisible, setTextVisible] = useState(false);
 
@@ -131,92 +133,64 @@ function TurnInitView({
   }, []);
 
   return (
-    <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-950 via-purple-950 to-pink-950 p-6'>
-      {/* Animated background particles */}
-      <div className='pointer-events-none fixed inset-0 overflow-hidden'>
-        {[...Array(40)].map((_, i) => (
-          <div
-            key={i}
-            className='absolute animate-pulse rounded-full bg-purple-500/30'
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              width: `${Math.random() * 8 + 2}px`,
-              height: `${Math.random() * 8 + 2}px`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${2 + Math.random() * 4}s`,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Floating orbs */}
-      <div className='pointer-events-none fixed inset-0 overflow-hidden'>
-        <div className='-left-20 absolute top-20 h-64 w-64 animate-pulse rounded-full bg-purple-600/20 blur-3xl' />
-        <div className='-right-20 absolute bottom-20 h-80 w-80 animate-pulse rounded-full bg-pink-600/20 blur-3xl' />
-      </div>
-
-      <div className='relative z-10 w-full max-w-4xl'>
-        {/* Stage indicator */}
-        <div className='fade-in mb-8 animate-in text-center duration-700'>
-          <div className='mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full border-4 border-purple-500 bg-gradient-to-br from-purple-600/30 to-pink-600/30 shadow-[0_0_40px_rgba(168,85,247,0.4)] backdrop-blur-sm'>
-            <span className='font-bold text-4xl text-white'>{stage}</span>
-          </div>
-          <p className='font-semibold text-purple-300 text-xl'>
-            Etap {stage} • Wiek: {age} lat
-          </p>
+    <div className='relative z-10 w-full max-w-4xl'>
+      {/* Stage indicator */}
+      <div className='fade-in mb-8 animate-in text-center duration-700'>
+        <div className='mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full border-4 border-purple-500 bg-gradient-to-br from-purple-600/30 to-pink-600/30 shadow-[0_0_40px_rgba(168,85,247,0.4)] backdrop-blur-sm'>
+          <span className='font-bold text-4xl text-white'>{stage}</span>
         </div>
+        <p className='font-semibold text-purple-300 text-xl'>
+          Etap {stage} • Wiek: {age} lat
+        </p>
+      </div>
 
-        {/* Main content card */}
-        <div
-          className={`slide-in-from-bottom relative overflow-hidden rounded-3xl border-2 border-purple-500/50 bg-gradient-to-br from-purple-900/40 to-indigo-900/40 p-12 shadow-[0_0_60px_rgba(168,85,247,0.3)] backdrop-blur-md transition-all duration-1000 ${
-            textVisible ? 'animate-in' : 'opacity-0'
-          }`}
-        >
-          {/* Decorative corner elements */}
-          <div className='absolute top-0 left-0 h-32 w-32 bg-gradient-to-br from-purple-600/20 to-transparent' />
-          <div className='absolute right-0 bottom-0 h-32 w-32 bg-gradient-to-tl from-pink-600/20 to-transparent' />
+      {/* Main content card */}
+      <div
+        className={`slide-in-from-bottom relative overflow-hidden rounded-3xl border-2 border-purple-500/50 bg-gradient-to-br from-purple-900/40 to-indigo-900/40 p-12 shadow-[0_0_60px_rgba(168,85,247,0.3)] backdrop-blur-md transition-all duration-1000 ${
+          textVisible ? 'animate-in' : 'opacity-0'
+        }`}
+      >
+        {/* Decorative corner elements */}
+        <div className='absolute top-0 left-0 h-32 w-32 bg-gradient-to-br from-purple-600/20 to-transparent' />
+        <div className='absolute right-0 bottom-0 h-32 w-32 bg-gradient-to-tl from-pink-600/20 to-transparent' />
 
-          {/* Animated border glow */}
-          <div className='absolute inset-0 bg-gradient-to-r from-purple-600/0 via-purple-600/10 to-purple-600/0 opacity-50 blur-xl' />
+        {/* Animated border glow */}
+        <div className='absolute inset-0 bg-gradient-to-r from-purple-600/0 via-purple-600/10 to-purple-600/0 opacity-50 blur-xl' />
 
-          <div className='relative z-10'>
-            <h2 className='mb-8 bg-gradient-to-r from-purple-200 via-pink-200 to-purple-200 bg-clip-text text-center font-bold text-4xl text-transparent md:text-5xl'>
-              Twoja historia trwa...
-            </h2>
+        <div className='relative z-10'>
+          <h2 className='mb-8 bg-gradient-to-r from-purple-200 via-pink-200 to-purple-200 bg-clip-text text-center font-bold text-4xl text-transparent md:text-5xl'>
+            Twoja historia trwa...
+          </h2>
 
-            <div className='relative'>
-              {/* Quote decoration */}
-              <div className='-left-6 -top-4 absolute text-6xl text-purple-500/30'>
-                "
-              </div>
-              <div className='-bottom-8 -right-6 absolute text-6xl text-purple-500/30'>
-                "
-              </div>
-
-              <p className='text-center font-medium text-2xl text-gray-100 leading-relaxed md:text-3xl'>
-                {description}
-              </p>
+          <div className='relative'>
+            {/* Quote decoration */}
+            <div className='-left-6 -top-4 absolute text-6xl text-purple-500/30'>
+              "
+            </div>
+            <div className='-bottom-8 -right-6 absolute text-6xl text-purple-500/30'>
+              "
             </div>
 
-            {/* Decorative line */}
-            <div className='mx-auto mt-12 h-1 w-32 rounded-full bg-gradient-to-r from-transparent via-purple-500 to-transparent' />
-
-            {/* Hint text */}
-            <p className='mt-8 text-center text-purple-300 text-sm'>
-              Kliknij strzałkę, aby kontynuować swoją podróż →
+            <p className='text-center font-medium text-2xl text-gray-100 leading-relaxed md:text-3xl'>
+              {description}
             </p>
           </div>
-        </div>
 
-        {/* Pulsing rings around card */}
-        <div className='pointer-events-none absolute inset-0 flex items-center justify-center'>
-          <div className='h-full w-full animate-pulse rounded-3xl border-2 border-purple-400/20' />
-          <div className='absolute h-[calc(100%+2rem)] w-[calc(100%+2rem)] animate-pulse rounded-3xl border-2 border-purple-400/10' />
+          {/* Decorative line */}
+          <div className='mx-auto mt-12 h-1 w-32 rounded-full bg-gradient-to-r from-transparent via-purple-500 to-transparent' />
+
+          {/* Hint text */}
+          <p className='mt-8 text-center text-purple-300 text-sm'>
+            Kliknij strzałkę, aby kontynuować swoją podróż →
+          </p>
         </div>
       </div>
 
-      <NextPhaseArrow onClick={onNext} />
+      {/* Pulsing rings around card */}
+      <div className='pointer-events-none absolute inset-0 flex items-center justify-center'>
+        <div className='h-full w-full animate-pulse rounded-3xl border-2 border-purple-400/20' />
+        <div className='absolute h-[calc(100%+2rem)] w-[calc(100%+2rem)] animate-pulse rounded-3xl border-2 border-purple-400/10' />
+      </div>
     </div>
   );
 }
@@ -263,16 +237,22 @@ export function GameplayView() {
     }
   };
 
-  if (stagePhase === 'turn-init') {
-    return (
-      <TurnInitView
-        description={gameState.turn_description}
-        age={gameState.age}
-        stage={gameState.current_stage}
-        onNext={handleNextPhase}
-      />
-    );
-  }
-
-  return <div>Phase: {stagePhase}</div>;
+  // main layout
+  return (
+    <div className='relative flex min-h-screen overflow-hidden'>
+      <AvatarsContainer />
+      <LifeBar />
+      <VerticalProgressBars />
+      <NextPhaseArrow onClick={handleNextPhase} />
+      <div className='phase-content-container flex w-full items-center justify-center'>
+        {stagePhase === 'turn-init' && (
+          <TurnInitView
+            description={gameState.turn_description}
+            age={gameState.age}
+            stage={gameState.current_stage}
+          />
+        )}
+      </div>
+    </div>
+  );
 }

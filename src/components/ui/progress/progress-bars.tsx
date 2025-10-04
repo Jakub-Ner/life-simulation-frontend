@@ -1,4 +1,5 @@
 import type React from 'react';
+import { useGameStore } from '~/store/gameStore';
 import './progress-bars.css';
 
 interface ProgressData {
@@ -13,18 +14,32 @@ export interface Progresses {
   relations: ProgressData;
 }
 
-interface VerticalProgressBarsProps {
-  progresses: Progresses;
-}
+const VerticalProgressBars: React.FC = () => {
+  const { parameters, parameterModifications } = useGameStore();
 
-const VerticalProgressBars: React.FC<VerticalProgressBarsProps> = ({
-  progresses,
-}) => {
+  const progresses: Progresses = {
+    career: {
+      previousValue: parameters.career,
+      currentValue: parameterModifications.career,
+    },
+    finances: {
+      previousValue: parameters.money,
+      currentValue: parameterModifications.money,
+    },
+    health: {
+      previousValue: parameters.health,
+      currentValue: parameterModifications.health,
+    },
+    relations: {
+      previousValue: parameters.relations,
+      currentValue: parameterModifications.relations,
+    },
+  };
   const categories = [
-    { key: 'career', label: 'Kariera', baseColorClass: 'bar-blue' },
-    { key: 'finances', label: 'Finanse', baseColorClass: 'bar-lime' },
-    { key: 'health', label: 'Zdrowie', baseColorClass: 'bar-teal' },
-    { key: 'relations', label: 'Relacje', baseColorClass: 'bar-grape' },
+    { key: 'career', label: '💼', baseColorClass: 'bar-blue' },
+    { key: 'finances', label: '💰', baseColorClass: 'bar-lime' },
+    { key: 'health', label: '💊', baseColorClass: 'bar-teal' },
+    { key: 'relations', label: '❤️', baseColorClass: 'bar-grape' },
   ];
 
   const maxValue = 100;

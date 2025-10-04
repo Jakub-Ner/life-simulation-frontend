@@ -1,16 +1,12 @@
 import type React from 'react';
+import { useGameStore } from '~/store/gameStore';
+import './LifeBar.css';
 
-type LifeBarProps = {
-  currentAge: number;
-  minAge?: number;
-  maxAge?: number;
-};
-
-const LifeBar: React.FC<LifeBarProps> = ({
-  currentAge,
-  minAge = 15,
-  maxAge = 65,
-}) => {
+const LifeBar: React.FC = () => {
+  const { gender, age } = useGameStore();
+  const minAge = 15;
+  const maxAge = gender === 'female' ? 60 : 65;
+  const currentAge = age;
   const clampedAge = Math.max(minAge, Math.min(currentAge, maxAge));
   const progressPercent = ((clampedAge - minAge) / (maxAge - minAge)) * 100;
 
@@ -53,10 +49,7 @@ const LifeBar: React.FC<LifeBarProps> = ({
   }
 
   return (
-    <div className='relative w-full max-w-2xl pt-8'>
-      <div className='absolute top-0 right-0 left-0 w-full text-center text-gray-400 text-lg'>
-        Wiek
-      </div>
+    <div className='life-bar-container'>
       <div className='relative h-10 w-full overflow-hidden rounded-lg bg-gray-200'>
         {/* Colored Progress */}
         <div

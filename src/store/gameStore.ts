@@ -37,6 +37,7 @@ interface RandomEvent {
 interface GameState {
   id: string | null;
   parameters: GameParameters;
+  parameterModifications: GameParameters;
   turn_description: string;
   current_stage: number;
   gender: string;
@@ -58,6 +59,12 @@ interface GameStore extends GameState {
 const initialState: GameState = {
   id: null,
   parameters: {
+    career: 0,
+    relations: 0,
+    health: 0,
+    money: 0,
+  },
+  parameterModifications: {
     career: 0,
     relations: 0,
     health: 0,
@@ -100,6 +107,7 @@ export const useGameStore = create<GameStore>((set) => ({
       set({
         id: data.id,
         parameters: data.parameters,
+        parameterModifications: data.parameters,
         turn_description: data.turn_description,
         current_stage: data.current_stage,
         gender: data.gender,
