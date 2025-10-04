@@ -27,20 +27,28 @@ const LifeBar: React.FC<LifeBarProps> = ({
 
     // Tick Mark
     ticks.push(
-        <div key={`tick-${a}`} className="absolute top-0 h-2 w-[1px] bg-black -translate-x-1/2" style={{ left: `${leftPercent}%` }}></div>
+      <div
+        key={`tick-${a}`}
+        className='-translate-x-1/2 absolute top-0 h-2 w-[1px] bg-black'
+        style={{ left: `${leftPercent}%` }}
+      ></div>,
     );
 
     // Label
-    let alignmentClass = "-translate-x-1/2";
+    let alignmentClass = '-translate-x-1/2';
     if (a === minAge) {
-        alignmentClass = "";
+      alignmentClass = '';
     } else if (a === maxAge) {
-        alignmentClass = "-translate-x-full";
+      alignmentClass = '-translate-x-full';
     }
     ticks.push(
-        <div key={`label-${a}`} className={`absolute top-2 text-sm text-black ${alignmentClass}`} style={{ left: `${leftPercent}%` }}>
-            {a}
-        </div>
+      <div
+        key={`label-${a}`}
+        className={`absolute top-2 text-black text-sm ${alignmentClass}`}
+        style={{ left: `${leftPercent}%` }}
+      >
+        {a}
+      </div>,
     );
   }
 
@@ -63,7 +71,7 @@ const LifeBar: React.FC<LifeBarProps> = ({
         >
           <div className='relative h-full'>
             <div className='-translate-x-1/2 absolute bottom-full mb-2'>
-              <div className='rounded bg-black p-1 font-bold text-white text-sm'>
+              <div className='rounded bg-black p-1 font-bold text-sm text-white'>
                 {clampedAge} lat
               </div>
               <div className='mx-auto h-0 w-0 border-t-4 border-t-black border-r-4 border-r-transparent border-l-4 border-l-transparent'></div>
