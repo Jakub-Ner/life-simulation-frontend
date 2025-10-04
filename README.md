@@ -5,12 +5,7 @@ All technical detail are in [docs in Frontend Tab](https://docs.google.com/docum
 ### Setup
 ```
 npm install -g pnpm@10.17.1
-
 pnpm install
-
-# Generate secret for NextAuth.js
-pnpm i auth
-pnpm exec auth secret
 ```
 
 
