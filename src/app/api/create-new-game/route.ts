@@ -148,7 +148,7 @@ const mockGameState = {
 };
 
 export async function POST(request: NextRequest) {
-  // return NextResponse.json(mockGameState);
+  return NextResponse.json(mockGameState);
   try {
     const body = await request.json();
 
