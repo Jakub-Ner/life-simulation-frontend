@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useGameStore } from '~/store/gameStore';
+import TurnInitView from './TurnInitView';
 import AvatarsContainer from './avatars/AvatarsContainer';
 import LifeBar from './ui/LifeBar';
 import VerticalProgressBars from './ui/progress/progress-bars';
-import TurnInitView from './TurnInitView';
 import './GameplayView.css';
 
 function StatBar({
@@ -116,8 +116,6 @@ function NextPhaseArrow({ onClick }: { onClick: () => void }) {
     </button>
   );
 }
-
-
 
 export function GameplayView() {
   const gameState = useGameStore();
