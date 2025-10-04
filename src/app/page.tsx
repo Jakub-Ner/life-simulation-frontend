@@ -23,12 +23,12 @@ export default function HomePage() {
   };
 
   return (
-    <>
+    <div className='select-none'>
       {gamePhase === 'landing' && <LandingPage onStart={handleStartGame} />}
       {gamePhase === 'onboarding' && (
         <OnboardingView onComplete={handleOnboardingComplete} />
       )}
       {gamePhase === 'gameplay' && <GameplayView />}
-    </>
+    </div>
   );
 }
