@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useGameStore } from '~/store/gameStore';
 
 function StatBar({
@@ -84,8 +84,152 @@ function PlayerInfo({
   );
 }
 
+function NextPhaseArrow({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      type='button'
+      onClick={onClick}
+      className='group fixed right-12 bottom-12 z-50 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-pink-600 shadow-[0_0_40px_rgba(168,85,247,0.6)] transition-all duration-300 hover:scale-110 hover:shadow-[0_0_60px_rgba(168,85,247,0.8)] active:scale-95'
+    >
+      <div className='absolute inset-0 animate-ping rounded-full bg-purple-400 opacity-20' />
+      <svg
+        className='relative z-10 h-10 w-10 text-white transition-transform duration-300 group-hover:translate-x-1'
+        fill='none'
+        stroke='currentColor'
+        viewBox='0 0 24 24'
+        role='img'
+        aria-label='arrow-title'
+      >
+        <path
+          strokeLinecap='round'
+          strokeLinejoin='round'
+          strokeWidth={3}
+          d='M13 7l5 5m0 0l-5 5m5-5H6'
+        />
+      </svg>
+      <div className='-inset-2 absolute animate-pulse rounded-full bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-30' />
+    </button>
+  );
+}
+
+function TurnInitView({
+  description,
+  age,
+  stage,
+  onNext,
+}: {
+  description: string;
+  age: number;
+  stage: number;
+  onNext: () => void;
+}) {
+  const [textVisible, setTextVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setTextVisible(true), 300);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-950 via-purple-950 to-pink-950 p-6'>
+      {/* Animated background particles */}
+      <div className='pointer-events-none fixed inset-0 overflow-hidden'>
+        {[...Array(40)].map((_, i) => (
+          <div
+            key={i}
+            className='absolute animate-pulse rounded-full bg-purple-500/30'
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              width: `${Math.random() * 8 + 2}px`,
+              height: `${Math.random() * 8 + 2}px`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${2 + Math.random() * 4}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Floating orbs */}
+      <div className='pointer-events-none fixed inset-0 overflow-hidden'>
+        <div className='-left-20 absolute top-20 h-64 w-64 animate-pulse rounded-full bg-purple-600/20 blur-3xl' />
+        <div className='-right-20 absolute bottom-20 h-80 w-80 animate-pulse rounded-full bg-pink-600/20 blur-3xl' />
+      </div>
+
+      <div className='relative z-10 w-full max-w-4xl'>
+        {/* Stage indicator */}
+        <div className='fade-in mb-8 animate-in text-center duration-700'>
+          <div className='mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full border-4 border-purple-500 bg-gradient-to-br from-purple-600/30 to-pink-600/30 shadow-[0_0_40px_rgba(168,85,247,0.4)] backdrop-blur-sm'>
+            <span className='font-bold text-4xl text-white'>{stage}</span>
+          </div>
+          <p className='font-semibold text-purple-300 text-xl'>
+            Etap {stage} • Wiek: {age} lat
+          </p>
+        </div>
+
+        {/* Main content card */}
+        <div
+          className={`slide-in-from-bottom relative overflow-hidden rounded-3xl border-2 border-purple-500/50 bg-gradient-to-br from-purple-900/40 to-indigo-900/40 p-12 shadow-[0_0_60px_rgba(168,85,247,0.3)] backdrop-blur-md transition-all duration-1000 ${
+            textVisible ? 'animate-in' : 'opacity-0'
+          }`}
+        >
+          {/* Decorative corner elements */}
+          <div className='absolute top-0 left-0 h-32 w-32 bg-gradient-to-br from-purple-600/20 to-transparent' />
+          <div className='absolute right-0 bottom-0 h-32 w-32 bg-gradient-to-tl from-pink-600/20 to-transparent' />
+
+          {/* Animated border glow */}
+          <div className='absolute inset-0 bg-gradient-to-r from-purple-600/0 via-purple-600/10 to-purple-600/0 opacity-50 blur-xl' />
+
+          <div className='relative z-10'>
+            <h2 className='mb-8 bg-gradient-to-r from-purple-200 via-pink-200 to-purple-200 bg-clip-text text-center font-bold text-4xl text-transparent md:text-5xl'>
+              Twoja historia trwa...
+            </h2>
+
+            <div className='relative'>
+              {/* Quote decoration */}
+              <div className='-left-6 -top-4 absolute text-6xl text-purple-500/30'>
+                "
+              </div>
+              <div className='-bottom-8 -right-6 absolute text-6xl text-purple-500/30'>
+                "
+              </div>
+
+              <p className='text-center font-medium text-2xl text-gray-100 leading-relaxed md:text-3xl'>
+                {description}
+              </p>
+            </div>
+
+            {/* Decorative line */}
+            <div className='mx-auto mt-12 h-1 w-32 rounded-full bg-gradient-to-r from-transparent via-purple-500 to-transparent' />
+
+            {/* Hint text */}
+            <p className='mt-8 text-center text-purple-300 text-sm'>
+              Kliknij strzałkę, aby kontynuować swoją podróż →
+            </p>
+          </div>
+        </div>
+
+        {/* Pulsing rings around card */}
+        <div className='pointer-events-none absolute inset-0 flex items-center justify-center'>
+          <div className='h-full w-full animate-pulse rounded-3xl border-2 border-purple-400/20' />
+          <div className='absolute h-[calc(100%+2rem)] w-[calc(100%+2rem)] animate-pulse rounded-3xl border-2 border-purple-400/10' />
+        </div>
+      </div>
+
+      <NextPhaseArrow onClick={onNext} />
+    </div>
+  );
+}
+
 export function GameplayView() {
   const gameState = useGameStore();
+  const [stagePhase, setStagePhase] = useState<
+    | 'turn-init'
+    | 'big-action-decision'
+    | 'small-actions-decision'
+    | 'random-event'
+  >('turn-init');
+
   if (gameState.isLoading) {
     return (
       <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-950 via-purple-950 to-pink-950'>
@@ -109,131 +253,26 @@ export function GameplayView() {
     );
   }
 
-  return (
-    <div className='min-h-screen bg-gradient-to-br from-indigo-950 via-purple-950 to-pink-950 p-6'>
-      {/* Animated background particles */}
-      <div className='pointer-events-none fixed inset-0 overflow-hidden'>
-        {[...Array(30)].map((_, i) => (
-          <div
-            key={i}
-            className='absolute h-1 w-1 animate-pulse rounded-full bg-purple-500/20'
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${2 + Math.random() * 4}s`,
-            }}
-          />
-        ))}
-      </div>
+  const handleNextPhase = () => {
+    if (stagePhase === 'turn-init') {
+      setStagePhase('big-action-decision');
+    } else if (stagePhase === 'big-action-decision') {
+      setStagePhase('small-actions-decision');
+    } else if (stagePhase === 'small-actions-decision') {
+      setStagePhase('random-event');
+    }
+  };
 
-      <div className='relative z-10 mx-auto max-w-7xl'>
-        {/* Header */}
-        <div className='fade-in slide-in-from-top mb-8 animate-in duration-700'>
-          <div className='flex items-center justify-between'>
-            <div>
-              <h1 className='mb-2 font-bold text-4xl text-white'>
-                Symulator Życia
-              </h1>
-              <p className='text-purple-300'>
-                Tura: {gameState.game_turn} | Etap: {gameState.current_stage}
-              </p>
-            </div>
-            <button
-              type='button'
-              onClick={() => gameState.resetGame()}
-              className='rounded-lg border-2 border-purple-600 bg-purple-600/20 px-6 py-2 font-semibold text-purple-300 transition-all duration-300 hover:bg-purple-600/30'
-            >
-              Nowa gra
-            </button>
-          </div>
-        </div>
+  if (stagePhase === 'turn-init') {
+    return (
+      <TurnInitView
+        description={gameState.turn_description}
+        age={gameState.age}
+        stage={gameState.current_stage}
+        onNext={handleNextPhase}
+      />
+    );
+  }
 
-        <div className='grid gap-6 lg:grid-cols-3'>
-          {/* Left Column - Player Info & Stats */}
-          <div className='fade-in slide-in-from-left animate-in space-y-6 duration-700 lg:col-span-1'>
-            <PlayerInfo
-              name={gameState.name}
-              age={gameState.age}
-              gender={gameState.gender}
-              goal={gameState.goal}
-            />
-
-            <div className='space-y-3'>
-              <h3 className='mb-4 font-bold text-white text-xl'>Parametry</h3>
-              <StatBar
-                label='Kariera'
-                value={gameState.parameters.career}
-                icon='💼'
-                color='bg-gradient-to-r from-blue-500 to-blue-600'
-              />
-              <StatBar
-                label='Relacje'
-                value={gameState.parameters.relations}
-                icon='❤️'
-                color='bg-gradient-to-r from-pink-500 to-pink-600'
-              />
-              <StatBar
-                label='Zdrowie'
-                value={gameState.parameters.health}
-                icon='🏥'
-                color='bg-gradient-to-r from-green-500 to-green-600'
-              />
-              <StatBar
-                label='Pieniądze'
-                value={gameState.parameters.money}
-                icon='💰'
-                color='bg-gradient-to-r from-yellow-500 to-yellow-600'
-              />
-            </div>
-          </div>
-
-          {/* Right Column - Game Content */}
-          <div className='fade-in slide-in-from-right animate-in space-y-6 duration-700 lg:col-span-2'>
-            {/* Current Situation */}
-            <div className='overflow-hidden rounded-2xl border border-purple-700/50 bg-purple-900/30 p-8 backdrop-blur-sm'>
-              <h3 className='mb-4 font-bold text-2xl text-white'>
-                Aktualna sytuacja
-              </h3>
-              <div className='prose prose-invert max-w-none'>
-                <p className='text-gray-200 text-lg leading-relaxed'>
-                  {gameState.turn_description ||
-                    'Twoja przygoda się rozpoczyna...'}
-                </p>
-              </div>
-            </div>
-
-            {/* Actions/Cards placeholder */}
-            <div className='overflow-hidden rounded-2xl border border-purple-700/50 bg-purple-900/30 p-8 backdrop-blur-sm'>
-              <h3 className='mb-6 font-bold text-2xl text-white'>
-                Wybierz swoją akcję
-              </h3>
-              <div className='flex min-h-[300px] items-center justify-center'>
-                <p className='text-gray-400 text-lg'>
-                  Karty akcji pojawią się tutaj...
-                </p>
-              </div>
-            </div>
-
-            {/* History */}
-            {gameState.history.length > 0 && (
-              <div className='overflow-hidden rounded-2xl border border-purple-700/50 bg-purple-900/30 p-6 backdrop-blur-sm'>
-                <h3 className='mb-4 font-bold text-white text-xl'>Historia</h3>
-                <div className='space-y-2'>
-                  {gameState.history.map((item, idx) => (
-                    <div
-                      key={idx}
-                      className='rounded-lg bg-purple-950/40 p-3 text-gray-300 text-sm'
-                    >
-                      {JSON.stringify(item)}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <div>Phase: {stagePhase}</div>;
 }
