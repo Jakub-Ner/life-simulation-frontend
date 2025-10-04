@@ -9,6 +9,7 @@ import LifeBar from './ui/LifeBar';
 import VerticalProgressBars from './ui/progress/progress-bars';
 import './GameplayView.css';
 import { Card } from '~/components/ui/card';
+import { useGameStore } from '~/store/gameStore';
 
 function StatBar({
   label,
@@ -26,7 +27,7 @@ function StatBar({
   const percentage = Math.min((value / max) * 100, 100);
 
   return (
-    <div className='group relative overflow-hidden rounded-xl border border-purple-700/50 bg-purple-900/30 p-4 backdrop-blur-sm transition-all duration-300 hover:border-purple-500 hover:bg-purple-800/40'>
+    <div className='group relative overflow-hidden rounded-xl border border-purple-700/50 bg-purple-900/30 p-4 backdrop-blur-sm transition-all duration-100 hover:border-purple-500 hover:bg-purple-800/40'>
       <div className='mb-2 flex items-center justify-between'>
         <div className='flex items-center gap-2'>
           <span className='text-2xl transition-transform duration-300 group-hover:scale-110'>
@@ -40,7 +41,7 @@ function StatBar({
       </div>
       <div className='relative h-3 overflow-hidden rounded-full bg-gray-800'>
         <div
-          className={`h-full rounded-full transition-all duration-1000 ease-out ${color}`}
+          className={`h-full rounded-full transition-all duration-100 ease-out ${color}`}
           style={{ width: `${percentage}%` }}
         />
         <div
@@ -241,18 +242,30 @@ interface GameAction {
   time_cost: number;
 }
 
-function BigActionDecisionView({
+function ActionDecisionView({
   actions,
   availableTime,
+  title,
   onActionSelected,
+  allowSkip = false,
 }: {
   actions: GameAction[];
   availableTime: number;
-  onActionSelected: (action: GameAction) => void;
+  title: string;
+  onActionSelected: (action: GameAction | null) => void;
+  allowSkip?: boolean;
 }) {
   const [selectedAction, setSelectedAction] = useState<GameAction | null>(null);
   const [isConfirming, setIsConfirming] = useState(false);
   const [isShatteringView, setIsShatteringView] = useState(false);
+  const [cardsExpanded, setCardsExpanded] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setCardsExpanded(true);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleConfirm = () => {
     if (!selectedAction) return;
@@ -262,7 +275,16 @@ function BigActionDecisionView({
 
     setTimeout(() => {
       onActionSelected(selectedAction);
-    }, 1000);
+    }, 100);
+  };
+
+  const handleSkip = () => {
+    setIsConfirming(true);
+    setIsShatteringView(true);
+
+    setTimeout(() => {
+      onActionSelected(null);
+    }, 500);
   };
 
   return (
@@ -287,7 +309,7 @@ function BigActionDecisionView({
         {/* Header */}
         <div className='fade-in mb-8 animate-in text-center duration-700'>
           <h2 className='mb-4 bg-gradient-to-r from-purple-200 via-pink-200 to-purple-200 bg-clip-text font-bold text-5xl text-transparent'>
-            Wybierz swoją wielką decyzję
+            {title}
           </h2>
           <div className='flex items-center justify-center gap-4'>
             <div className='flex items-center gap-2 rounded-full border-2 border-purple-500 bg-purple-900/40 px-6 py-3 backdrop-blur-sm'>
@@ -300,28 +322,40 @@ function BigActionDecisionView({
         </div>
 
         {/* Action Cards */}
-        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
+        <div className='flex flex-wrap justify-center gap-6'>
           {actions.map((action, idx) => {
             const isSelected = selectedAction?.name === action.name;
             const canAfford = availableTime >= action.time_cost;
+            const centerIndex = Math.floor(actions.length / 2);
+            const offsetFromCenter = idx - centerIndex;
 
             return (
               <div
                 key={action.name}
-                className={`transition-all duration-500 ${isShatteringView && !isSelected
-                    ? 'animate-[fadeOut_0.5s_ease-out_forwards]'
-                    : ''
+                className={`transition-all duration-700 ease-out ${isShatteringView && !isSelected
+                  ? 'animate-[fadeOut_0.5s_ease-out_forwards]'
+                  : ''
                   }`}
                 style={{
+                  transform: cardsExpanded
+                    ? 'translateX(0)'
+                    : `translateX(${-offsetFromCenter * 240}px) scale(0.8)`,
+                  opacity: cardsExpanded ? 1 : 0.5,
                   animationDelay: isShatteringView ? `${idx * 0.1}s` : '0s',
+                  transitionDelay: cardsExpanded
+                    ? `${Math.abs(offsetFromCenter) * 0.08}s`
+                    : '0s',
                 }}
               >
                 <Card
+                  key={`${action.name}-${idx}`}
                   requiredTime={action.time_cost}
                   imageUrl={action.image_url}
                   description={action.name}
                   parameterChanges={action.parameter_change}
-                  onClick={() => canAfford && !isConfirming && setSelectedAction(action)}
+                  onClick={() =>
+                    canAfford && !isConfirming && setSelectedAction(action)
+                  }
                   isSelected={isSelected}
                   isDisabled={!canAfford || isConfirming}
                   disabledReason={!canAfford ? 'Brak czasu!' : undefined}
@@ -331,33 +365,30 @@ function BigActionDecisionView({
           })}
         </div>
 
-        {/* Confirm button */}
-        {selectedAction && !isConfirming && (
-          <div className='zoom-in fixed bottom-8 left-1/2 -translate-x-1/2 animate-in'>
+        {/* Action buttons */}
+        <div className='zoom-in -translate-x-1/2 fixed bottom-8 left-1/2 flex animate-in gap-4'>
+          {allowSkip && !isConfirming && (
+            <button
+              type='button'
+              onClick={handleSkip}
+              className='group relative overflow-hidden rounded-2xl border-2 border-purple-600 bg-transparent px-8 py-4 font-bold text-lg text-purple-300 shadow-[0_0_30px_rgba(168,85,247,0.3)] transition-all duration-300 hover:scale-105 hover:bg-purple-600/20'
+            >
+              Pomiń ⏭️
+            </button>
+          )}
+
+          {selectedAction && !isConfirming && (
             <button
               type='button'
               onClick={handleConfirm}
-              className='group relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 px-12 py-6 font-bold text-2xl text-white shadow-[0_0_50px_rgba(168,85,247,0.6)] transition-all duration-300 hover:scale-110 hover:shadow-[0_0_80px_rgba(168,85,247,0.8)]'
+              className='group relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 px-12 py-4 font-bold text-2xl text-white shadow-[0_0_50px_rgba(168,85,247,0.6)] transition-all duration-300 hover:scale-110 hover:shadow-[0_0_80px_rgba(168,85,247,0.8)]'
             >
               <div className='absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-600 opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
               <span className='relative z-10'>Potwierdzam wybór! 🎯</span>
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-
-      <style jsx>{`
-        @keyframes fadeOut {
-          0% {
-            opacity: 1;
-            transform: scale(1);
-          }
-          100% {
-            opacity: 0;
-            transform: scale(0.9) translateY(20px);
-          }
-        }
-      `}</style>
     </div>
   );
 }
@@ -371,6 +402,7 @@ export function GameplayView() {
     | 'random-event'
   >('turn-init');
   const [availableTime, setAvailableTime] = useState(10);
+  const [viewKey, setViewKey] = useState(0); // Add key to force remount
 
   if (gameState.isLoading) {
     return (
@@ -405,11 +437,34 @@ export function GameplayView() {
     }
   };
 
-  const handleBigActionSelected = (action: GameAction) => {
-    setAvailableTime((prev) => prev - action.time_cost);
+  const handleBigActionSelected = (action: GameAction | null) => {
+    if (action) {
+      setAvailableTime((prev) => prev - action.time_cost);
+    }
     setTimeout(() => {
       setStagePhase('small-actions-decision');
     }, 100);
+  };
+
+  const handleSmallActionSelected = (action: GameAction | null) => {
+    let newAvailableTime = availableTime;
+
+    if (action) {
+      newAvailableTime = availableTime - action.time_cost;
+      setAvailableTime(newAvailableTime);
+    }
+
+    // Wait for shatter animation to complete before transitioning
+    setTimeout(() => {
+      if (newAvailableTime > 0 && action !== null) {
+        // User selected an action and has time left
+        // Increment viewKey to force complete remount
+        setViewKey((prev) => prev + 1);
+      } else {
+        // User skipped or no time left - move to next phase
+        setStagePhase('random-event');
+      }
+    }, 1100); // Wait for shatter animation (1000ms) + buffer
   };
 
   return (
@@ -424,13 +479,26 @@ export function GameplayView() {
             description={gameState.turn_description}
             age={gameState.age}
             stage={gameState.current_stage}
+            onNext={handleNextPhase}
           />
         )}
         {stagePhase === 'big-action-decision' && (
-          <BigActionDecisionView
+          <ActionDecisionView
             actions={gameState.big_actions}
             availableTime={availableTime}
+            title='Wybierz swoją wielką decyzję'
             onActionSelected={handleBigActionSelected}
+            allowSkip={false}
+          />
+        )}
+        {stagePhase === 'small-actions-decision' && (
+          <ActionDecisionView
+            key={viewKey} // Force remount with new key
+            actions={gameState.small_actions}
+            availableTime={availableTime}
+            title='Wybierz małe akcje'
+            onActionSelected={handleSmallActionSelected}
+            allowSkip={false}
           />
         )}
       </div>
