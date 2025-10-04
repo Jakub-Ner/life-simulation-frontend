@@ -1,17 +1,26 @@
-import AvatarsContainer from '~/components/avatars/AvatarsContainer';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { LandingPage } from '~/components/LandingPage';
+
+type GamePhase = 'landing' | 'onboarding' | 'gameplay';
 
 export default function HomePage() {
+  const [gamePhase, setGamePhase] = useState<GamePhase>('landing');
+
+  useEffect(() => {
+    setGamePhase('landing');
+  }, []);
+
+  const handleStartGame = () => {
+    setGamePhase('onboarding');
+  };
+
   return (
-    <main className='relative flex min-h-screen overflow-hidden'>
-      huj
-      <AvatarsContainer
-        age='YOUNG'
-        gender='male'
-        isHappy={false}
-        isSick={true}
-        isSpouse={false}
-        hasChild={true}
-      />
-    </main>
+    <>
+      {gamePhase === 'landing' && <LandingPage onStart={handleStartGame} />}
+      {gamePhase === 'onboarding' && <div>Onboarding phase (TODO)</div>}
+      {gamePhase === 'gameplay' && <div>Gameplay phase (TODO)</div>}
+    </>
   );
 }
