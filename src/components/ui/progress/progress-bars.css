@@ -1,0 +1,81 @@
+.progress-bars-container {
+  display: flex;
+  padding: 10px;
+  background-color: transparent;
+  border-radius: 8px;
+  justify-content: center;
+}
+
+.progress-bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 60px;
+  margin: 0 5px;
+}
+
+.progress-bar-label {
+  margin-bottom: 8px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+
+.progress-bar-vertical-track {
+  width: 25px;
+  height: 200px;
+  background-color: #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-base-fill {
+  width: 100%;
+  position: absolute; 
+  bottom: 0;
+  left: 0;
+  transition: height 0.5s ease-in-out;
+}
+
+.bar-blue { background-color: #64b5f6; }
+.bar-lime { background-color: #aed581; }
+.bar-teal { background-color: #4db6ac; }
+.bar-grape { background-color: #9575cd; }
+
+
+.progress-diff-fill {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8em;
+  font-weight: bold;
+  color: white;
+  opacity: 1;
+  transition: all 0.5s ease-in-out;
+}
+
+.diff-positive {
+  background-color: #69f0ae;
+}
+
+.diff-negative {
+  background-color: #ff8a80;
+}
+
+.diff-value {
+  padding: 2px 5px;
+  background-color: rgba(0, 0, 0, 0.2);
+  line-height: 1;
+}
+
+.current-value-label {
+  margin-top: 8px;
+  font-weight: bold;
+  font-size: 1em;
+}
