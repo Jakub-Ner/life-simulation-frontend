@@ -32,7 +32,6 @@ const NextPhaseArrow: React.FC<NextPhaseArrowProps> = ({ onClick }) => {
         viewBox='0 0 24 24'
         style={{ width: '40px', height: '40px' }}
         aria-label='Next phase arrow'
-        
       >
         <path
           strokeLinecap='round'
