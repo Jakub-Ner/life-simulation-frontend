@@ -49,11 +49,16 @@ interface GameState {
   age: number;
   isLoading: boolean;
   error: string | null;
+  turnChoices: {
+    small_actions: GameAction[];
+    big_actions: GameAction[];
+  };
 }
 
 interface GameStore extends GameState {
   createNewGame: (gender: string, goal: string, name: string) => Promise<void>;
   resetGame: () => void;
+  updateTurnChoices: (choices: typeof initialState.turnChoices) => void;
 }
 
 const initialState: GameState = {
@@ -69,6 +74,10 @@ const initialState: GameState = {
     relations: 0,
     health: 0,
     money: 0,
+  },
+  turnChoices: {
+    small_actions: [],
+    big_actions: [],
   },
   turn_description: '',
   current_stage: 0,
@@ -132,4 +141,6 @@ export const useGameStore = create<GameStore>((set) => ({
   resetGame: () => {
     set(initialState);
   },
+
+  updateTurnChoices: (choices) => set({ turnChoices: choices }),
 }));
