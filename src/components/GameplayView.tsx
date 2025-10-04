@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { ActionDecisionView } from './ActionDecisionView';
+import { useState } from 'react';
+import { ActionDecisionView, type GameAction } from './ActionDecisionView';
+import { ActionMultipleDecisionView } from './ActionMultipleDecisionView';
 import NextPhaseArrow from './NextPhaseArrow';
 import TurnInitView from './TurnInitView';
 import AvatarsContainer from './avatars/AvatarsContainer';
@@ -9,7 +10,6 @@ import LifeBar from './ui/LifeBar';
 import VerticalProgressBars from './ui/progress/progress-bars';
 import './GameplayView.css';
 import { useGameStore } from '~/store/gameStore';
-import type { GameAction } from './ActionDecisionView';
 
 export function GameplayView() {
   const gameState = useGameStore();
@@ -68,28 +68,20 @@ export function GameplayView() {
     }, 100);
   };
 
-  const handleSmallActionSelected = (action: GameAction | null) => {
-    let newAvailableTime = availableTime;
-
-    if (action) {
-      newAvailableTime = availableTime - action.time_cost;
-      setAvailableTime(newAvailableTime);
-      gameState.updateTurnChoices({
-        big_actions: gameState.turnChoices.big_actions,
-        small_actions: [...gameState.turnChoices.small_actions, action],
-      });
-    }
+  const handleSmallActionsConfirmed = (actions: GameAction[]) => {
+    const totalTimeCost = actions.reduce(
+      (sum, action) => sum + action.time_cost,
+      0,
+    );
+    setAvailableTime((prev) => prev - totalTimeCost);
+    gameState.updateTurnChoices({
+      big_actions: gameState.turnChoices.big_actions,
+      small_actions: [...gameState.turnChoices.small_actions, ...actions],
+    });
 
     // Wait for shatter animation to complete before transitioning
     setTimeout(() => {
-      if (newAvailableTime > 0 && action !== null) {
-        // User selected an action and has time left
-        // Increment viewKey to force complete remount
-        setViewKey((prev) => prev + 1);
-      } else {
-        // User skipped or no time left - move to next phase
-        setStagePhase('random-event');
-      }
+      setStagePhase('random-event');
     }, 1100); // Wait for shatter animation (1000ms) + buffer
   };
 
@@ -117,12 +109,11 @@ export function GameplayView() {
           />
         )}
         {stagePhase === 'small-actions-decision' && (
-          <ActionDecisionView
-            key={viewKey} // Force remount with new key
+          <ActionMultipleDecisionView
             actions={gameState.small_actions}
             availableTime={availableTime}
             title='Wybierz małe akcje'
-            onActionSelected={handleSmallActionSelected}
+            onActionsConfirmed={handleSmallActionsConfirmed}
             allowSkip={false}
           />
         )}
