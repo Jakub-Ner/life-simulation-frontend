@@ -14,7 +14,7 @@ export default function GamePage() {
 
       <div className='mt-16 flex flex-grow flex-col items-center justify-center'>
         <button
-          type="button"
+          type='button'
           onClick={() => setAge(age + 5)}
           className='rounded bg-blue-600 px-4 py-2 transition hover:bg-blue-700'
         >
