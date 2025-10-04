@@ -7,16 +7,44 @@ interface GameParameters {
   money: number;
 }
 
+interface ParameterChange {
+  career: number;
+  relations: number;
+  health: number;
+  money: number;
+}
+
+interface GameAction {
+  name: string;
+  description: string;
+  image_url: string;
+  parameter_change: ParameterChange;
+  time_cost: number;
+}
+
+interface RandomEventReaction {
+  name: string;
+  description: string;
+  parameter_change: ParameterChange;
+}
+
+interface RandomEvent {
+  name: string;
+  description: string;
+  reactions: RandomEventReaction[];
+}
+
 interface GameState {
   id: string | null;
   parameters: GameParameters;
-  history: unknown[];
   turn_description: string;
   current_stage: number;
-  game_turn: number;
   gender: string;
   name: string;
   goal: string;
+  big_actions: GameAction[];
+  small_actions: GameAction[];
+  random_event: RandomEvent | null;
   age: number;
   isLoading: boolean;
   error: string | null;
@@ -35,13 +63,14 @@ const initialState: GameState = {
     health: 0,
     money: 0,
   },
-  history: [],
   turn_description: '',
   current_stage: 0,
-  game_turn: 0,
   gender: '',
   name: '',
   goal: '',
+  big_actions: [],
+  small_actions: [],
+  random_event: null,
   age: 0,
   isLoading: false,
   error: null,
@@ -71,13 +100,14 @@ export const useGameStore = create<GameStore>((set) => ({
       set({
         id: data.id,
         parameters: data.parameters,
-        history: data.history,
         turn_description: data.turn_description,
         current_stage: data.current_stage,
-        game_turn: data.game_turn,
         gender: data.gender,
         name: data.name,
         goal: data.goal,
+        big_actions: data.big_actions || [],
+        small_actions: data.small_actions || [],
+        random_event: data.random_event || null,
         age: data.age,
         isLoading: false,
         error: null,
