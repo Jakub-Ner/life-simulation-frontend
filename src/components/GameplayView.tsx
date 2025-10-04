@@ -2,6 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useGameStore } from '~/store/gameStore';
+import AvatarsContainer from './avatars/AvatarsContainer';
+import LifeBar from './ui/LifeBar';
+import VerticalProgressBars from './ui/progress/progress-bars';
+import "./GameplayView.css";
 
 function StatBar({
   label,
@@ -89,7 +93,7 @@ function NextPhaseArrow({ onClick }: { onClick: () => void }) {
     <button
       type='button'
       onClick={onClick}
-      className='group fixed right-12 bottom-12 z-50 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-pink-600 shadow-[0_0_40px_rgba(168,85,247,0.6)] transition-all duration-300 hover:scale-110 hover:shadow-[0_0_60px_rgba(168,85,247,0.8)] active:scale-95'
+      className='group fixed left-70 bottom-5 z-50 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-pink-600 shadow-[0_0_40px_rgba(168,85,247,0.6)] transition-all duration-300 hover:scale-110 hover:shadow-[0_0_60px_rgba(168,85,247,0.8)] active:scale-95'
     >
       <div className='absolute inset-0 animate-ping rounded-full bg-purple-400 opacity-20' />
       <svg
@@ -116,12 +120,10 @@ function TurnInitView({
   description,
   age,
   stage,
-  onNext,
 }: {
   description: string;
   age: number;
   stage: number;
-  onNext: () => void;
 }) {
   const [textVisible, setTextVisible] = useState(false);
 
@@ -131,31 +133,6 @@ function TurnInitView({
   }, []);
 
   return (
-    <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-950 via-purple-950 to-pink-950 p-6'>
-      {/* Animated background particles */}
-      <div className='pointer-events-none fixed inset-0 overflow-hidden'>
-        {[...Array(40)].map((_, i) => (
-          <div
-            key={i}
-            className='absolute animate-pulse rounded-full bg-purple-500/30'
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              width: `${Math.random() * 8 + 2}px`,
-              height: `${Math.random() * 8 + 2}px`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${2 + Math.random() * 4}s`,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Floating orbs */}
-      <div className='pointer-events-none fixed inset-0 overflow-hidden'>
-        <div className='-left-20 absolute top-20 h-64 w-64 animate-pulse rounded-full bg-purple-600/20 blur-3xl' />
-        <div className='-right-20 absolute bottom-20 h-80 w-80 animate-pulse rounded-full bg-pink-600/20 blur-3xl' />
-      </div>
-
       <div className='relative z-10 w-full max-w-4xl'>
         {/* Stage indicator */}
         <div className='fade-in mb-8 animate-in text-center duration-700'>
@@ -215,9 +192,6 @@ function TurnInitView({
           <div className='absolute h-[calc(100%+2rem)] w-[calc(100%+2rem)] animate-pulse rounded-3xl border-2 border-purple-400/10' />
         </div>
       </div>
-
-      <NextPhaseArrow onClick={onNext} />
-    </div>
   );
 }
 
@@ -263,16 +237,20 @@ export function GameplayView() {
     }
   };
 
-  if (stagePhase === 'turn-init') {
-    return (
-      <TurnInitView
-        description={gameState.turn_description}
-        age={gameState.age}
-        stage={gameState.current_stage}
-        onNext={handleNextPhase}
-      />
-    );
-  }
-
-  return <div>Phase: {stagePhase}</div>;
+  // main layout
+  return <div className='relative flex min-h-screen overflow-hidden'>
+    <AvatarsContainer />
+    <LifeBar />
+    <VerticalProgressBars />
+    <NextPhaseArrow onClick={handleNextPhase} />
+    <div className='w-full flex items-center justify-center phase-content-container'>
+      {stagePhase === 'turn-init' && (
+        <TurnInitView
+          description={gameState.turn_description}
+          age={gameState.age}
+          stage={gameState.current_stage}
+        />
+      )}
+    </div>
+  </div>;
 }

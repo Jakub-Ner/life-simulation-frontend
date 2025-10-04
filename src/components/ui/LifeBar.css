@@ -1,0 +1,7 @@
+.life-bar-container {
+    position: absolute;
+    width: 40rem;
+    left: 50%;
+    top: 1rem;
+    transform: translate(-50%, 0);
+}
