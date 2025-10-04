@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import './progress-bars.css';
 
 interface ProgressData {
@@ -17,7 +17,9 @@ interface VerticalProgressBarsProps {
   progresses: Progresses;
 }
 
-const VerticalProgressBars: React.FC<VerticalProgressBarsProps> = ({ progresses }) => {
+const VerticalProgressBars: React.FC<VerticalProgressBarsProps> = ({
+  progresses,
+}) => {
   const categories = [
     { key: 'career', label: 'Kariera', baseColorClass: 'bar-blue' },
     { key: 'finances', label: 'Finanse', baseColorClass: 'bar-lime' },
@@ -28,7 +30,7 @@ const VerticalProgressBars: React.FC<VerticalProgressBarsProps> = ({ progresses 
   const maxValue = 100;
 
   return (
-    <div className="progress-bars-container">
+    <div className='progress-bars-container'>
       {categories.map((category) => {
         const data = progresses[category.key as keyof Progresses];
         if (!data) return null;
@@ -40,10 +42,11 @@ const VerticalProgressBars: React.FC<VerticalProgressBarsProps> = ({ progresses 
         const baseHeightPercent = (previousValue / maxValue) * 100;
         const diffHeightPercent = (Math.abs(difference) / maxValue) * 100;
 
-        const diffColorClass = difference >= 0 ? 'diff-positive' : 'diff-negative';
+        const diffColorClass =
+          difference >= 0 ? 'diff-positive' : 'diff-negative';
 
         let baseDisplayHeight = baseHeightPercent;
-        let diffDisplayHeight = diffHeightPercent;
+        const diffDisplayHeight = diffHeightPercent;
         let diffSegmentPosition: React.CSSProperties = {};
 
         if (difference > 0) {
@@ -54,9 +57,9 @@ const VerticalProgressBars: React.FC<VerticalProgressBarsProps> = ({ progresses 
         }
 
         return (
-          <div className="progress-bar-wrapper" key={category.key}>
-            <div className="progress-bar-label">{category.label}</div>
-            <div className="progress-bar-vertical-track">
+          <div className='progress-bar-wrapper' key={category.key}>
+            <div className='progress-bar-label'>{category.label}</div>
+            <div className='progress-bar-vertical-track'>
               <div
                 className={`progress-base-fill ${category.baseColorClass}`}
                 style={{ height: `${baseDisplayHeight}%` }}
@@ -70,13 +73,13 @@ const VerticalProgressBars: React.FC<VerticalProgressBarsProps> = ({ progresses 
                     ...diffSegmentPosition,
                   }}
                 >
-                  <span className="diff-value">
+                  <span className='diff-value'>
                     {difference > 0 ? `+${difference}` : difference}
                   </span>
                 </div>
               )}
             </div>
-            <div className="current-value-label">{currentValue}</div>
+            <div className='current-value-label'>{currentValue}</div>
           </div>
         );
       })}

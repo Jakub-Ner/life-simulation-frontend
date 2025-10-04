@@ -1,0 +1,12 @@
+.avatars-container {
+  display: flex;
+  gap: 1rem;
+  background-color: black;
+  border-radius: 100%;
+  padding: 1rem;
+  position: absolute;
+  left: -5rem;
+  bottom: -7rem;
+  width: 25rem;
+  height: 25rem;
+}
