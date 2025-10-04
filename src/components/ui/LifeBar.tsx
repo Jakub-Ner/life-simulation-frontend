@@ -27,28 +27,20 @@ const LifeBar: React.FC<LifeBarProps> = ({
 
     // Tick Mark
     ticks.push(
-      <div
-        key={`tick-${a}`}
-        className='-translate-x-1/2 absolute top-0 h-2 w-[1px] bg-white'
-        style={{ left: `${leftPercent}%` }}
-      ></div>,
+        <div key={`tick-${a}`} className="absolute top-0 h-2 w-[1px] bg-black -translate-x-1/2" style={{ left: `${leftPercent}%` }}></div>
     );
 
     // Label
-    let alignmentClass = '-translate-x-1/2';
+    let alignmentClass = "-translate-x-1/2";
     if (a === minAge) {
-      alignmentClass = '';
+        alignmentClass = "";
     } else if (a === maxAge) {
-      alignmentClass = '-translate-x-full';
+        alignmentClass = "-translate-x-full";
     }
     ticks.push(
-      <div
-        key={`label-${a}`}
-        className={`absolute top-2 text-sm text-white ${alignmentClass}`}
-        style={{ left: `${leftPercent}%` }}
-      >
-        {a}
-      </div>,
+        <div key={`label-${a}`} className={`absolute top-2 text-sm text-black ${alignmentClass}`} style={{ left: `${leftPercent}%` }}>
+            {a}
+        </div>
     );
   }
 
@@ -57,7 +49,7 @@ const LifeBar: React.FC<LifeBarProps> = ({
       <div className='absolute top-0 right-0 left-0 w-full text-center text-gray-400 text-lg'>
         Wiek
       </div>
-      <div className='relative h-10 w-full overflow-hidden rounded-lg bg-gray-700'>
+      <div className='relative h-10 w-full overflow-hidden rounded-lg bg-gray-200'>
         {/* Colored Progress */}
         <div
           className={`${getColor()} h-full transition-all duration-500`}
@@ -71,12 +63,12 @@ const LifeBar: React.FC<LifeBarProps> = ({
         >
           <div className='relative h-full'>
             <div className='-translate-x-1/2 absolute bottom-full mb-2'>
-              <div className='rounded bg-white p-1 font-bold text-black text-sm'>
+              <div className='rounded bg-black p-1 font-bold text-white text-sm'>
                 {clampedAge} lat
               </div>
-              <div className='mx-auto h-0 w-0 border-t-4 border-t-white border-r-4 border-r-transparent border-l-4 border-l-transparent'></div>
+              <div className='mx-auto h-0 w-0 border-t-4 border-t-black border-r-4 border-r-transparent border-l-4 border-l-transparent'></div>
             </div>
-            <div className='h-full w-[2px] bg-white'></div>
+            <div className='h-full w-[2px] bg-black'></div>
           </div>
         </div>
       </div>

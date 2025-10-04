@@ -7,7 +7,7 @@ export default function GamePage() {
   const [age, setAge] = useState(15);
 
   return (
-    <main className='flex min-h-screen flex-col bg-[#15162c] p-8 text-white'>
+    <main className='flex min-h-screen flex-col bg-white p-8 text-black'>
       <div className='flex flex-col items-center justify-start gap-4 pt-12'>
         <LifeBar currentAge={age} maxAge={60} />
       </div>
