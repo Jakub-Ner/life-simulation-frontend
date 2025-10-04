@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useGameStore } from '~/store/gameStore';
+import NextPhaseArrow from './NextPhaseArrow';
 import TurnInitView from './TurnInitView';
 import AvatarsContainer from './avatars/AvatarsContainer';
 import LifeBar from './ui/LifeBar';
@@ -86,34 +87,6 @@ function PlayerInfo({
         </div>
       </div>
     </div>
-  );
-}
-
-function NextPhaseArrow({ onClick }: { onClick: () => void }) {
-  return (
-    <button
-      type='button'
-      onClick={onClick}
-      className='group fixed bottom-5 left-70 z-50 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-pink-600 shadow-[0_0_40px_rgba(168,85,247,0.6)] transition-all duration-300 hover:scale-110 hover:shadow-[0_0_60px_rgba(168,85,247,0.8)] active:scale-95'
-    >
-      <div className='absolute inset-0 animate-ping rounded-full bg-purple-400 opacity-20' />
-      <svg
-        className='relative z-10 h-10 w-10 text-white transition-transform duration-300 group-hover:translate-x-1'
-        fill='none'
-        stroke='currentColor'
-        viewBox='0 0 24 24'
-        role='img'
-        aria-label='arrow-title'
-      >
-        <path
-          strokeLinecap='round'
-          strokeLinejoin='round'
-          strokeWidth={3}
-          d='M13 7l5 5m0 0l-5 5m5-5H6'
-        />
-      </svg>
-      <div className='-inset-2 absolute animate-pulse rounded-full bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-30' />
-    </button>
   );
 }
 

@@ -24,7 +24,8 @@
         "noArrayIndexKey": "off"
       },
       "a11y": {
-        "useKeyWithClickEvents": "off"
+        "useKeyWithClickEvents": "off",
+        "noSvgWithoutTitle": "off"
       },
       "nursery": {
         "useSortedClasses": {
