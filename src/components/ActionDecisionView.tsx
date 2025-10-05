@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Card } from '~/components/ui/card';
+import { useGameStore } from '~/store/gameStore';
 
 export interface GameAction {
   name: string;
@@ -29,10 +30,25 @@ export function ActionDecisionView({
   onActionSelected: (action: GameAction | null) => void;
   allowSkip?: boolean;
 }) {
+  const gameStore = useGameStore();
   const [selectedAction, setSelectedAction] = useState<GameAction | null>(null);
   const [isConfirming, setIsConfirming] = useState(false);
   const [isShatteringView, setIsShatteringView] = useState(false);
   const [cardsExpanded, setCardsExpanded] = useState(false);
+
+  const remainingTime =
+    availableTime - (selectedAction ? selectedAction.time_cost : 0);
+
+  useEffect(() => {
+    gameStore.resetParameterModificationsToCurrent();
+  }, [gameStore.resetParameterModificationsToCurrent]);
+
+  useEffect(() => {
+    const deltas = selectedAction
+      ? selectedAction.parameter_change
+      : { career: 0, relations: 0, health: 0, money: 0 };
+    gameStore.tempSetParameterModifications(deltas);
+  }, [selectedAction, gameStore.tempSetParameterModifications]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -72,7 +88,7 @@ export function ActionDecisionView({
           <div className='flex items-center gap-2 rounded-full border-2 border-purple-500 bg-purple-900/40 px-6 py-3 backdrop-blur-sm'>
             <span className='text-2xl'>⏱️</span>
             <span className='font-bold text-white text-xl'>
-              {availableTime} godz. pozostało
+              {remainingTime} godz. pozostało
             </span>
           </div>
         </div>

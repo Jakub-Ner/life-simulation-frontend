@@ -53,12 +53,17 @@ interface GameState {
     small_actions: GameAction[];
     big_actions: GameAction[];
   };
+  gamePhase: 'landing' | 'onboarding' | 'gameplay' | 'gameover';
 }
 
 interface GameStore extends GameState {
   createNewGame: (gender: string, goal: string, name: string) => Promise<void>;
   resetGame: () => void;
   updateTurnChoices: (choices: typeof initialState.turnChoices) => void;
+  tempSetParameterModifications: (deltas: GameParameters) => void;
+  applyChangesToParams: () => void;
+  resetParameterModificationsToCurrent: () => void;
+  setGamePhase: (phase: GameState['gamePhase']) => void;
 }
 
 const initialState: GameState = {
@@ -90,6 +95,7 @@ const initialState: GameState = {
   age: 0,
   isLoading: false,
   error: null,
+  gamePhase: 'landing',
 };
 
 export const useGameStore = create<GameStore>((set) => ({
@@ -143,4 +149,32 @@ export const useGameStore = create<GameStore>((set) => ({
   },
 
   updateTurnChoices: (choices) => set({ turnChoices: choices }),
+
+  tempSetParameterModifications: (deltas) =>
+    set((state) => ({
+      parameterModifications: {
+        career: Math.max(0, state.parameters.career + deltas.career),
+        relations: Math.max(0, state.parameters.relations + deltas.relations),
+        health: Math.max(0, state.parameters.health + deltas.health),
+        money: Math.max(0, state.parameters.money + deltas.money),
+      },
+    })),
+
+  applyChangesToParams: () =>
+    set((state) => {
+      const newParams = { ...state.parameterModifications };
+      const isGameOver = Object.values(newParams).some((value) => value <= 0);
+
+      return {
+        parameters: newParams,
+        gamePhase: isGameOver ? 'gameover' : state.gamePhase,
+      };
+    }),
+
+  resetParameterModificationsToCurrent: () =>
+    set((state) => ({
+      parameterModifications: { ...state.parameters },
+    })),
+
+  setGamePhase: (phase) => set({ gamePhase: phase }),
 }));

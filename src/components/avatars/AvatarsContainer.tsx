@@ -20,7 +20,7 @@ const AvatarsContainer: React.FC = () => {
   const gender = genderFromStore as Gender;
   const isHappy = true;
   const isSick = false;
-  const isSpouse = false;
+  const isSpouse = true;
   const hasChild = false;
   const size = 320;
   const isShadow = false;

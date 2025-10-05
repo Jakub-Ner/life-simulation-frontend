@@ -1,34 +1,32 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { GameplayView } from '~/components/GameplayView';
 import { LandingPage } from '~/components/LandingPage';
 import { OnboardingView } from '~/components/OnboardingView';
-
-type GamePhase = 'landing' | 'onboarding' | 'gameplay';
+import { useGameStore } from '~/store/gameStore';
 
 export default function HomePage() {
-  const [gamePhase, setGamePhase] = useState<GamePhase>('landing');
-
-  useEffect(() => {
-    setGamePhase('landing');
-  }, []);
+  const gameState = useGameStore();
 
   const handleStartGame = () => {
-    setGamePhase('onboarding');
+    gameState.setGamePhase('onboarding');
   };
 
   const handleOnboardingComplete = () => {
-    setGamePhase('gameplay');
+    gameState.setGamePhase('gameplay');
   };
 
   return (
     <div className='select-none'>
-      {gamePhase === 'landing' && <LandingPage onStart={handleStartGame} />}
-      {gamePhase === 'onboarding' && (
+      {gameState.gamePhase === 'landing' && (
+        <LandingPage onStart={handleStartGame} />
+      )}
+      {gameState.gamePhase === 'onboarding' && (
         <OnboardingView onComplete={handleOnboardingComplete} />
       )}
-      {gamePhase === 'gameplay' && <GameplayView />}
+      {gameState.gamePhase === 'gameplay' && <GameplayView />}
+      {gameState.gamePhase === 'gameover' && <div>Game Over</div>}
     </div>
   );
 }

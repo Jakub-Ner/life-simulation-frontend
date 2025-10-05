@@ -10,6 +10,7 @@ const NextPhaseArrow: React.FC<NextPhaseArrowProps> = ({ onClick }) => {
       type='button'
       onClick={onClick}
       style={{
+        zIndex: 5000000000000,
         position: 'fixed',
         bottom: '20px',
         left: '300px',

@@ -62,6 +62,7 @@ export function GameplayView() {
         big_actions: [...gameState.turnChoices.big_actions, action],
         small_actions: gameState.turnChoices.small_actions,
       });
+      gameState.applyChangesToParams();
     }
     setTimeout(() => {
       setStagePhase('small-actions-decision');
@@ -78,6 +79,7 @@ export function GameplayView() {
       big_actions: gameState.turnChoices.big_actions,
       small_actions: [...gameState.turnChoices.small_actions, ...actions],
     });
+    gameState.applyChangesToParams();
 
     // Wait for shatter animation to complete before transitioning
     setTimeout(() => {
