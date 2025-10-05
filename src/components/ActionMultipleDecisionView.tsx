@@ -117,9 +117,9 @@ export function ActionMultipleDecisionView({
     <div className='relative z-10 mx-auto max-w-7xl'>
       {/* Header */}
       <div className='fade-in mb-8 animate-in text-center duration-700'>
-        <h2 className='mb-4 bg-gradient-to-r from-emerald-200 via-cyan-200 to-emerald-200 bg-clip-text font-bold text-5xl text-transparent'>
+        <h6 className='mb-4 bg-gradient-to-r from-emerald-200 via-cyan-200 to-emerald-200 bg-clip-text font-bold text-xl text-transparent'>
           {title}
-        </h2>
+        </h6>
         <div className='flex items-center justify-center gap-4'>
           <div className='flex items-center gap-2 rounded-full border-2 border-emerald-500 bg-teal-900/40 px-6 py-3 backdrop-blur-sm'>
             <span className='text-2xl'>⏱️</span>
@@ -139,7 +139,7 @@ export function ActionMultipleDecisionView({
       </div>
 
       {/* Action Cards */}
-      <div className='flex flex-wrap justify-center gap-6'>
+      <div className='flex flex-wrap justify-center gap-4'>
         {actions.map((action, idx) => {
           const isSelected = selectedActions.some(
             (a) => a.name === action.name,

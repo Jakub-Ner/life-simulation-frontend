@@ -16,6 +16,7 @@ export interface CardProps {
   isDisabled?: boolean;
   disabledReason?: string;
   autoFlip?: boolean;
+  showTimeBadge?: boolean;
 }
 
 const customStyles = `
@@ -75,6 +76,7 @@ export const Card = ({
   isSelected = false,
   isDisabled = false,
   disabledReason,
+  showTimeBadge = true,
 }: CardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -93,12 +95,16 @@ export const Card = ({
     }
   };
 
+// border: #146a4c
+// background: #eddbb9
+// accents: #084b53
+
   return (
     <>
       <style>{customStyles}</style>
       <div className='card-container flex select-none items-center justify-center'>
         <div
-          className={`card relative h-[332px] w-[210px] cursor-pointer rounded-xl shadow-2xl transition-all duration-500 ${
+          className={`card relative h-[398px] w-[232px] cursor-pointer rounded-xl shadow-2xl transition-all duration-500 ${
             isFlipped ? 'flipped' : ''
           } ${isSelected ? 'selected scale-105' : ''} ${
             isDisabled ? 'opacity-50' : 'hover:scale-105'
@@ -116,28 +122,23 @@ export const Card = ({
           />
 
           {/* Front Side of the Card */}
-          <div className='card-face card-back absolute inset-0 flex flex-col items-center overflow-hidden rounded-xl border-2 border-teal-700/50 bg-gradient-to-br from-teal-900/90 to-cyan-900/90 p-4 shadow-inner backdrop-blur-sm'>
-            <TimeBadge requiredTime={requiredTime} />
-
-            {/* Image */}
-            <div className='mt-6 flex h-2/5 w-full items-center justify-center overflow-hidden rounded-lg border-2 border-emerald-600/50'>
-              <img
-                src={imageUrl}
-                alt='Card Visual'
-                className='h-full w-full object-cover'
-              />
-            </div>
+          <div 
+            style={{
+              backgroundImage: `url(${imageUrl})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+            }}
+            className='card-face card-back absolute inset-0 flex flex-col-reverse items-center overflow-hidden rounded-xl border-2 border-teal-700/50 shadow-inner backdrop-blur-sm'>
+            {showTimeBadge && <TimeBadge requiredTime={requiredTime} />}  
 
             {/* Description */}
-            <div className='mt-3 flex-grow'>
-              <p className='line-clamp-3 text-center font-semibold text-gray-100 text-xs leading-tight'>
+            <div className='mt-3 flex-col w-full p-2 gap-4 bg-black/20 backdrop-blur-sm'>
+              <p className='line-clamp-3 text-center font-bold text-gray-100 text-s leading-tight mb-2'>
                 {description}
               </p>
-            </div>
-
-            {/* Parameter changes */}
-            {parameterChanges && (
-              <div className='mt-2 grid w-full grid-cols-2 gap-1'>
+                {parameterChanges && (
+              <div className='grid w-full grid-cols-2 gap-1'>
                 {Object.entries(parameterChanges).map(([key, value]) => (
                   <div
                     key={key}
@@ -158,6 +159,10 @@ export const Card = ({
                 ))}
               </div>
             )}
+            </div>
+
+            {/* Parameter changes */}
+
 
             {/* Selection indicator */}
             {isSelected && (
