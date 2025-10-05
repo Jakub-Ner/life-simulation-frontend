@@ -10,10 +10,7 @@ import './GameplayView.css';
 import { useGameStore } from '~/store/gameStore';
 import { ActionDecisionView, type GameAction } from './ActionDecisionView';
 import { ActionMultipleDecisionView } from './ActionMultipleDecisionView';
-import {
-  RandomEventView,
-  type RandomEventReaction,
-} from './RandomEventView';
+import { type RandomEventReaction, RandomEventView } from './RandomEventView';
 
 export function GameplayView() {
   const gameState = useGameStore();
@@ -89,9 +86,7 @@ export function GameplayView() {
     }, 1100); // Wait for shatter animation (1000ms) + buffer
   };
 
-  const handleRandomEventReactionSelected = (
-    reaction: RandomEventReaction,
-  ) => {
+  const handleRandomEventReactionSelected = (reaction: RandomEventReaction) => {
     // TODO: Send reaction to backend and proceed to next turn
     console.log('Selected reaction:', reaction);
     // For now, just log the selection

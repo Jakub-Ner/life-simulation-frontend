@@ -76,7 +76,7 @@ export function RandomEventView({
           <h2 className='mb-6 bg-gradient-to-r from-purple-200 via-pink-200 to-purple-200 bg-clip-text font-bold text-4xl text-transparent'>
             {event.name}
           </h2>
-          <p className='mx-auto max-w-2xl text-xl text-gray-300 leading-relaxed'>
+          <p className='mx-auto max-w-2xl text-gray-300 text-xl leading-relaxed'>
             {event.description}
           </p>
         </div>
@@ -126,7 +126,6 @@ export function RandomEventView({
         {/* Confirm button */}
         {selectedReaction && !isConfirming && (
           <div className='zoom-in -translate-x-1/2 fixed bottom-8 left-1/2 flex animate-in flex-col items-center gap-4'>
-
             <button
               type='button'
               onClick={handleConfirm}
