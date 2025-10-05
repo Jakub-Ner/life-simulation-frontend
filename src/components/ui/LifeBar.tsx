@@ -25,7 +25,7 @@ const LifeBar: React.FC = () => {
     ticks.push(
       <div
         key={`tick-${a}`}
-        className='-translate-x-1/2 absolute top-0 h-2 w-[1px] bg-black'
+        className='-translate-x-1/2 absolute top-0 h-2 w-[1px] bg-white'
         style={{ left: `${leftPercent}%` }}
       ></div>,
     );
@@ -40,7 +40,7 @@ const LifeBar: React.FC = () => {
     ticks.push(
       <div
         key={`label-${a}`}
-        className={`absolute top-2 text-black text-sm ${alignmentClass}`}
+        className={`absolute top-2 text-white text-sm font-bold ${alignmentClass}`}
         style={{ left: `${leftPercent}%` }}
       >
         {a}
