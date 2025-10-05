@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-interface GameParameters {
+export interface GameParameters {
   career: number;
   relations: number;
   health: number;
@@ -56,6 +56,7 @@ interface GameState {
     big_actions: GameAction[];
     random_event_reaction: RandomEventReaction | null;
   };
+  stage_summary: string | null;
   gamePhase: 'landing' | 'onboarding' | 'gameplay' | 'gameover';
   availableTime: number;
   remainingTime: number;
@@ -109,6 +110,7 @@ const initialState: GameState = {
   age: 0,
   isLoading: false,
   error: null,
+  stage_summary: null,
   gamePhase: 'landing',
   availableTime: 10,
   remainingTime: 10,
@@ -138,7 +140,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       set({
         id: data.id,
-        parameters: data.parameters,
+        parameters: data.parameters || initialState.parameters,
         parameterModifications: data.parameters,
         turn_description: data.turn_description,
         current_stage: data.current_stage,
@@ -192,7 +194,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       set({
         ...data,
-        parameterModifications: data.parameters,
+        stage_summary: data.stage_summary || null,
+        parameterModifications: data.parameters || get().parameters,
         isLoading: false,
         error: null,
         remainingTime: 10,

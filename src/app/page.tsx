@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { GameplayView } from '~/components/GameplayView';
 import { LandingPage } from '~/components/LandingPage';
 import { OnboardingView } from '~/components/OnboardingView';
+import GameOverView from '~/components/GameOverView';
 import { useGameStore } from '~/store/gameStore';
 
 export default function HomePage() {
@@ -26,7 +27,13 @@ export default function HomePage() {
         <OnboardingView onComplete={handleOnboardingComplete} />
       )}
       {gameState.gamePhase === 'gameplay' && <GameplayView />}
-      {gameState.gamePhase === 'gameover' && <div>Game Over</div>}
+      {gameState.gamePhase === 'gameover' && (
+        <GameOverView
+          stats={gameState.parameters}
+          summary={gameState.stage_summary || 'Twoja historia dobiegła końca. Dziękujemy za grę!'}
+          onPlayAgain={gameState.resetGame}
+        />
+      )}
     </div>
   );
 }
