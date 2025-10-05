@@ -125,10 +125,11 @@ export function GameplayView() {
       </div>
 
       {/* 3. Main Phase Content Layer: Intermediate layer (z-20) */}
-      <div className='relative z-20 flex w-full items-center justify-center p-4' style={{ marginTop: '10vh' }}>
-        <div
-          key={stagePhase}
-        >
+      <div
+        className='relative z-20 flex w-full items-center justify-center p-4'
+        style={{ marginTop: '10vh' }}
+      >
+        <div key={stagePhase}>
           {stagePhase === 'turn-init' && (
             <TurnInitView
               description={gameState.turn_description}

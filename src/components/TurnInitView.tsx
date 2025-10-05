@@ -83,9 +83,7 @@ const TurnInitView: React.FC<TurnInitViewProps> = ({
       </div>
 
       {/* Main content container, now FIXED at the top (top-10) and centered */}
-      <div
-        className='fixed top-20 left-1/2 -translate-x-1/2 z-10 w-full max-w-4xl fade-in slide-in-from-top-4 animate-in duration-500'
-      >
+      <div className='-translate-x-1/2 fade-in slide-in-from-top-4 fixed top-20 left-1/2 z-10 w-full max-w-4xl animate-in duration-500'>
         <div
           // Removed hover effects, fixed the border and shadow
           className='relative overflow-hidden rounded-3xl border-2 border-teal-800/50 bg-teal-900/30 p-10 text-center shadow-[0_0_50px_rgba(16,185,129,0.2)] backdrop-blur-sm'
@@ -94,30 +92,24 @@ const TurnInitView: React.FC<TurnInitViewProps> = ({
           <div className='absolute inset-0 rounded-3xl border-4 border-transparent bg-gradient-to-br from-emerald-500/0 via-teal-600/50 to-cyan-600/0 opacity-20' />
 
           {/* Heading with gradient text */}
-          <h1
-            className='mb-4 text-center font-extrabold text-5xl tracking-tight'
-          >
+          <h1 className='mb-4 text-center font-extrabold text-5xl tracking-tight'>
             <span className='bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent'>
               Etap {stage} • Wiek: {age} lat
             </span>
           </h1>
-          
+
           {/* Main description */}
-          <p
-            className='mb-6 font-medium text-center text-gray-200 text-2xl leading-relaxed'
-          >
+          <p className='mb-6 text-center font-medium text-2xl text-gray-200 leading-relaxed'>
             {description}
           </p>
 
           {/* Call to action text */}
-          <p
-            className='text-center font-light text-lg text-teal-300'
-          >
+          <p className='text-center font-light text-lg text-teal-300'>
             Kliknij przycisk poniżej, aby rozpocząć turę →
           </p>
         </div>
       </div>
-      
+
       {/* Navigation button (centered at the bottom) */}
       <div className='-translate-x-1/2 fixed bottom-8 left-1/2 flex animate-in duration-500'>
         <button

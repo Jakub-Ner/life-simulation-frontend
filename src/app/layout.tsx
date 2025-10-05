@@ -6,7 +6,8 @@ import Providers from './providers';
 
 export const metadata: Metadata = {
   title: 'Bieg Przez Życie',
-  description: 'Symulator życia, w którym przeżyjesz całe dorosłe życie – od młodości po emeryturę – podejmując decyzje, które ukształtują Twoją przyszłość.',
+  description:
+    'Symulator życia, w którym przeżyjesz całe dorosłe życie – od młodości po emeryturę – podejmując decyzje, które ukształtują Twoją przyszłość.',
   icons: [{ rel: 'icon', url: '/favicon.ico' }],
 };
 
