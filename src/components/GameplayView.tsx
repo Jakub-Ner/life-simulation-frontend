@@ -73,11 +73,10 @@ export function GameplayView() {
     console.log('Selected reaction:', reaction);
     gameState.setRandomEventReaction(reaction);
     gameState.applyChangesToParams();
-    await gameState.nextTurn(reaction.id);
+    gameState.nextTurn(reaction.id);
 
     setTimeout(() => {
       setStagePhase('turn-init');
-      setAvailableTime(10);
     }, 1100);
   };
 
