@@ -181,7 +181,6 @@ export async function POST(request: NextRequest) {
       { status: 500 },
     );
   }
->>>>>>> ac6d023 (random action view)
 }
 
 export async function OPTIONS() {
