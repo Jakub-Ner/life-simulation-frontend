@@ -34,7 +34,7 @@ const SegmentLifeBar: React.FC = () => {
       : Math.floor((clampedAge - minAge) / 5);
 
   return (
-    <div className="segment-life-bar-container flex gap-2 items-center justify-center">
+    <div className='segment-life-bar-container flex items-center justify-center gap-2'>
       {segmentStarts.map((startAge, index) => {
         const isActive = index <= currentSegmentIndex;
         const stage = getStageForStartAge(startAge);
@@ -44,7 +44,7 @@ const SegmentLifeBar: React.FC = () => {
         return (
           <div
             key={`segment-${startAge}`}
-            className={`rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap ${bgColor} ${textColor} transition-colors duration-300`}
+            className={`whitespace-nowrap rounded-full px-3 py-1 font-medium text-xs ${bgColor} ${textColor} transition-colors duration-300`}
           >
             {startAge}-{startAge + 5}
           </div>
