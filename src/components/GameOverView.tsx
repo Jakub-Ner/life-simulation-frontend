@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
-import { type GameParameters } from '~/store/gameStore';
+import type React from 'react';
+import type { GameParameters } from '~/store/gameStore';
 
 interface GameOverViewProps {
   summary: string;
@@ -21,10 +21,10 @@ const GameOverView: React.FC<GameOverViewProps> = ({
           Koniec gry
         </h1>
 
-        <div className='mx-auto mb-12 mt-8 grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-2'>
+        <div className='mx-auto mt-8 mb-12 grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-2'>
           {/* Stats Section */}
           <div className='rounded-lg bg-white/10 p-8 text-left backdrop-blur-sm'>
-            <h2 className='mb-4 border-b border-gray-500 pb-2 font-bold text-3xl text-cyan-300'>
+            <h2 className='mb-4 border-gray-500 border-b pb-2 font-bold text-3xl text-cyan-300'>
               Statystyki końcowe
             </h2>
             <ul className='space-y-6 text-3xl text-gray-200'>
@@ -33,38 +33,46 @@ const GameOverView: React.FC<GameOverViewProps> = ({
                   <span className='mr-4 text-5xl'>💼</span>
                   Kariera
                 </span>
-                <span className='text-4xl font-semibold text-white'>{stats.career}</span>
+                <span className='font-semibold text-4xl text-white'>
+                  {stats.career}
+                </span>
               </li>
               <li className='flex items-center justify-between'>
                 <span className='flex items-center'>
                   <span className='mr-4 text-5xl'>❤️</span>
                   Relacje
                 </span>
-                <span className='text-4xl font-semibold text-white'>{stats.relations}</span>
+                <span className='font-semibold text-4xl text-white'>
+                  {stats.relations}
+                </span>
               </li>
               <li className='flex items-center justify-between'>
                 <span className='flex items-center'>
                   <span className='mr-4 text-5xl'>🏥</span>
                   Zdrowie
                 </span>
-                <span className='text-4xl font-semibold text-white'>{stats.health}</span>
+                <span className='font-semibold text-4xl text-white'>
+                  {stats.health}
+                </span>
               </li>
               <li className='flex items-center justify-between'>
                 <span className='flex items-center'>
                   <span className='mr-4 text-5xl'>💰</span>
                   Pieniądze
                 </span>
-                <span className='text-4xl font-semibold text-white'>{stats.money}</span>
+                <span className='font-semibold text-4xl text-white'>
+                  {stats.money}
+                </span>
               </li>
             </ul>
           </div>
 
           {/* Summary Section */}
           <div className='rounded-lg bg-white/10 p-8 text-left backdrop-blur-sm'>
-            <h2 className='mb-4 border-b border-gray-500 pb-2 font-bold text-3xl text-cyan-300'>
+            <h2 className='mb-4 border-gray-500 border-b pb-2 font-bold text-3xl text-cyan-300'>
               Podsumowanie
             </h2>
-            <p className='text-xl text-gray-200'>{summary}</p>
+            <p className='text-gray-200 text-xl'>{summary}</p>
           </div>
         </div>
 
