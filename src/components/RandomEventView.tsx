@@ -107,7 +107,7 @@ export function RandomEventView({
             >
               <Card
                 key={`${reaction.description}-${idx}`}
-                requiredTime={0}
+                requiredTime={null}
                 imageUrl={reaction.image_url}
                 description={reaction.description}
                 parameterChanges={reaction.parameter_change}

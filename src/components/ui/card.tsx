@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 
 export interface CardProps {
-  requiredTime: number;
+  requiredTime: number | null;
   imageUrl: string;
   description: string;
   parameterChanges?: {
@@ -117,7 +117,7 @@ export const Card = ({
 
           {/* Front Side of the Card */}
           <div className='card-face card-back absolute inset-0 flex flex-col items-center overflow-hidden rounded-xl border-2 border-teal-700/50 bg-gradient-to-br from-teal-900/90 to-cyan-900/90 p-4 shadow-inner backdrop-blur-sm'>
-            <TimeBadge requiredTime={requiredTime} />
+            {requiredTime !== null && <TimeBadge requiredTime={requiredTime} />}
 
             {/* Image */}
             <div className='mt-6 flex h-2/5 w-full items-center justify-center overflow-hidden rounded-lg border-2 border-emerald-600/50'>

@@ -230,7 +230,7 @@ export async function POST(request: NextRequest) {
   // return new Promise((resolve) => {
   //   setTimeout(() => {
   //     resolve(NextResponse.json(mockGameState));
-  //   }, 1000);
+  //   }, 2000);
   // });
 
   try {

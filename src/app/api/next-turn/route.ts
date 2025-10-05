@@ -328,7 +328,7 @@ export async function POST(request: NextRequest) {
   // return new Promise((resolve) => {
   //   setTimeout(() => {
   //     resolve(NextResponse.json(gameOverMockData));
-  //   }, 1000);
+  //   }, 3000);
   // });
 
   try {
