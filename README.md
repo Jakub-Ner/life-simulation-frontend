@@ -1,5 +1,6 @@
 ## Hackyeah template
 
+
 All technical detail are in [docs in Frontend Tab](https://docs.google.com/document/d/1s3dbK2idycV7KRwIbKhNyM9upXksScCM0FkPzP7fCCA/edit?tab=t.ei2t7sxxeh9p)
 
 ### Setup
