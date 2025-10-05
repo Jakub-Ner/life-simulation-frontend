@@ -53,7 +53,7 @@ const TurnInitView: React.FC<TurnInitViewProps> = ({
           Kliknij przycisk poniżej, aby rozpocząć turę →
         </p>
       </div>
-      <div className='fixed bottom-8 left-1/2 flex -translate-x-1/2 animate-in'>
+      <div className='-translate-x-1/2 fixed bottom-8 left-1/2 flex animate-in'>
         <button
           type='button'
           onClick={onNextAction}

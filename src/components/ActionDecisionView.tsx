@@ -39,7 +39,9 @@ export function ActionDecisionView({
   }, [gameStore.resetParameterModificationsToCurrent]);
 
   useEffect(() => {
-    gameStore.updateRemainingTime(selectedAction ? selectedAction.time_cost : 0);
+    gameStore.updateRemainingTime(
+      selectedAction ? selectedAction.time_cost : 0,
+    );
   }, [selectedAction, gameStore.updateRemainingTime]);
 
   useEffect(() => {

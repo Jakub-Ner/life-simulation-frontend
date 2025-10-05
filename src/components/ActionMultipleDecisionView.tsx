@@ -66,8 +66,6 @@ export function ActionMultipleDecisionView({
     return () => clearTimeout(timer);
   }, []);
 
-
-
   const handleCardClick = (action: GameAction) => {
     if (isConfirming) return;
 
@@ -87,7 +85,10 @@ export function ActionMultipleDecisionView({
   };
 
   const handleConfirm = () => {
-    const totalCost = selectedActions.reduce((sum, action) => sum + action.time_cost, 0);
+    const totalCost = selectedActions.reduce(
+      (sum, action) => sum + action.time_cost,
+      0,
+    );
     gameStore.updateCommittedUsedTime(totalCost);
     gameStore.updateRemainingTime(0);
     const actionsToConfirm = [...selectedActions];
