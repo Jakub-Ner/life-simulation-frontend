@@ -52,7 +52,7 @@ const TimeBadge = ({ requiredTime }: { requiredTime: number }) => (
 );
 
 const cardBackImage = '/card-reverse.png';
-const animationDelay = 900; // milliseconds
+const animationDelay = 1200; // milliseconds
 
 const getParameterColor = (value: number) => {
   if (value > 0) return 'text-green-400';

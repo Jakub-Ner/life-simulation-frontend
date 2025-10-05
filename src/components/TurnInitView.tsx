@@ -1,4 +1,5 @@
 import type React from 'react';
+import { useGameStore } from '~/store/gameStore';
 
 interface TurnInitViewProps {
   description: string;
@@ -13,6 +14,10 @@ const TurnInitView: React.FC<TurnInitViewProps> = ({
   stage,
   onNextAction,
 }) => {
+  const gameState = useGameStore((state) => state);
+  if (gameState.isLoading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className='relative z-10 mx-auto max-w-4xl'>
       <div
