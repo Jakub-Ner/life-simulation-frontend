@@ -27,6 +27,7 @@ interface RandomEventReaction {
   image_url: string;
   parameter_change: ParameterChange;
   result: string;
+  id: string;
 }
 
 interface RandomEvent {
@@ -53,14 +54,19 @@ interface GameState {
   turnChoices: {
     small_actions: GameAction[];
     big_actions: GameAction[];
+    random_event_reaction: RandomEventReaction | null;
   };
   gamePhase: 'landing' | 'onboarding' | 'gameplay' | 'gameover';
 }
 
 interface GameStore extends GameState {
   createNewGame: (gender: string, goal: string, name: string) => Promise<void>;
+  nextTurn: (reaction_id: string) => Promise<void>;
   resetGame: () => void;
   updateTurnChoices: (choices: typeof initialState.turnChoices) => void;
+  addBigAction: (action: GameAction) => void;
+  addSmallAction: (action: GameAction) => void;
+  setRandomEventReaction: (reaction: RandomEventReaction) => void;
   tempSetParameterModifications: (deltas: GameParameters) => void;
   applyChangesToParams: () => void;
   resetParameterModificationsToCurrent: () => void;
@@ -84,6 +90,7 @@ const initialState: GameState = {
   turnChoices: {
     small_actions: [],
     big_actions: [],
+    random_event_reaction: null,
   },
   turn_description: '',
   current_stage: 0,
@@ -99,7 +106,7 @@ const initialState: GameState = {
   gamePhase: 'landing',
 };
 
-export const useGameStore = create<GameStore>((set) => ({
+export const useGameStore = create<GameStore>((set, get) => ({
   ...initialState,
 
   createNewGame: async (gender: string, goal: string, name: string) => {
@@ -145,11 +152,65 @@ export const useGameStore = create<GameStore>((set) => ({
     }
   },
 
+  nextTurn: async (reaction_id: string) => {
+    const currentState = get();
+    const response = await fetch('/api/next-turn', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        chosen_action_references: [
+          ...currentState.turnChoices.big_actions.map((a) => a.name),
+          ...currentState.turnChoices.small_actions.map((a) => a.name),
+          reaction_id
+        ],
+        state_id: currentState.id,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to proceed to next turn: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    set({
+      ...data,
+      isLoading: false,
+      error: null,
+    });
+  },
+
   resetGame: () => {
     set(initialState);
   },
 
   updateTurnChoices: (choices) => set({ turnChoices: choices }),
+
+  addBigAction: (action) =>
+    set((state) => ({
+      turnChoices: {
+        ...state.turnChoices,
+        big_actions: [...state.turnChoices.big_actions, action],
+      },
+    })),
+
+  addSmallAction: (action) =>
+    set((state) => ({
+      turnChoices: {
+        ...state.turnChoices,
+        small_actions: [...state.turnChoices.small_actions, action],
+      },
+    })),
+
+  setRandomEventReaction: (reaction) =>
+    set((state) => ({
+      turnChoices: {
+        ...state.turnChoices,
+        random_event_reaction: reaction,
+      },
+    })),
 
   tempSetParameterModifications: (deltas) =>
     set((state) => ({

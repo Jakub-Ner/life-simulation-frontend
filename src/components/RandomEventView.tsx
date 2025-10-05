@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { Card } from '~/components/ui/card';
+import { useGameStore } from '~/store/gameStore';
 
 export interface RandomEventReaction {
+  id: string;
   description: string;
   image_url: string;
   parameter_change: {
@@ -28,11 +30,23 @@ export function RandomEventView({
   event: RandomEvent;
   onReactionSelected: (reaction: RandomEventReaction) => void;
 }) {
+  const gameStore = useGameStore();
   const [selectedReaction, setSelectedReaction] =
     useState<RandomEventReaction | null>(null);
   const [isConfirming, setIsConfirming] = useState(false);
   const [isShatteringView, setIsShatteringView] = useState(false);
   const [cardsExpanded, setCardsExpanded] = useState(false);
+
+  useEffect(() => {
+    gameStore.resetParameterModificationsToCurrent();
+  }, [gameStore.resetParameterModificationsToCurrent]);
+
+  useEffect(() => {
+    const deltas = selectedReaction
+      ? selectedReaction.parameter_change
+      : { career: 0, relations: 0, health: 0, money: 0 };
+    gameStore.tempSetParameterModifications(deltas);
+  }, [selectedReaction, gameStore.tempSetParameterModifications]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -53,23 +67,6 @@ export function RandomEventView({
   };
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-indigo-950 via-purple-950 to-pink-950 p-6'>
-      {/* Animated background */}
-      <div className='pointer-events-none fixed inset-0 overflow-hidden'>
-        {[...Array(30)].map((_, i) => (
-          <div
-            key={i}
-            className='absolute h-1 w-1 animate-pulse rounded-full bg-purple-500/20'
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${2 + Math.random() * 4}s`,
-            }}
-          />
-        ))}
-      </div>
-
       <div className='relative z-10 mx-auto max-w-7xl'>
         {/* Event Header */}
         <div className='fade-in mb-12 animate-in text-center duration-700'>
@@ -137,6 +134,5 @@ export function RandomEventView({
           </div>
         )}
       </div>
-    </div>
   );
 }

@@ -21,7 +21,6 @@ export function GameplayView() {
     | 'random-event'
   >('turn-init');
   const [availableTime, setAvailableTime] = useState(10);
-  const [viewKey, setViewKey] = useState(0); // Add key to force remount
 
   if (gameState.isLoading) {
     return (
@@ -59,10 +58,7 @@ export function GameplayView() {
   const handleBigActionSelected = (action: GameAction | null) => {
     if (action) {
       setAvailableTime((prev) => prev - action.time_cost);
-      gameState.updateTurnChoices({
-        big_actions: [...gameState.turnChoices.big_actions, action],
-        small_actions: gameState.turnChoices.small_actions,
-      });
+      gameState.addBigAction(action);
       gameState.applyChangesToParams();
     }
     setTimeout(() => {
@@ -76,10 +72,9 @@ export function GameplayView() {
       0,
     );
     setAvailableTime((prev) => prev - totalTimeCost);
-    gameState.updateTurnChoices({
-      big_actions: gameState.turnChoices.big_actions,
-      small_actions: [...gameState.turnChoices.small_actions, ...actions],
-    });
+    for (const action of actions) {
+      gameState.addSmallAction(action);
+    }
     gameState.applyChangesToParams();
 
     // Wait for shatter animation to complete before transitioning
@@ -88,13 +83,15 @@ export function GameplayView() {
     }, 1100); // Wait for shatter animation (1000ms) + buffer
   };
 
-  const handleRandomEventReactionSelected = (reaction: RandomEventReaction) => {
+  const handleRandomEventReactionSelected = async (reaction: RandomEventReaction) => {
     // TODO: Send reaction to backend and proceed to next turn
     console.log('Selected reaction:', reaction);
-    // For now, just log the selection
+    gameState.setRandomEventReaction(reaction);
+    gameState.applyChangesToParams();
+    await gameState.nextTurn(reaction.id);
+
     setTimeout(() => {
-      // This is where you would transition to the next turn
-      // setStagePhase('turn-init');
+      setStagePhase('turn-init');
     }, 1100);
   };
 
