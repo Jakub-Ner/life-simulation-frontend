@@ -163,37 +163,49 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   nextTurn: async (reaction_id: string) => {
-    const currentState = get();
-    const response = await fetch('/api/next-turn', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        chosen_action_references: [
-          ...currentState.turnChoices.big_actions.map((a) => a.name),
-          ...currentState.turnChoices.small_actions.map((a) => a.name),
-          reaction_id,
-        ],
-        state_id: currentState.id,
-      }),
-    });
+    set({ isLoading: true, error: null });
 
-    if (!response.ok) {
-      throw new Error(`Failed to proceed to next turn: ${response.statusText}`);
+    try {
+      const currentState = get();
+      const response = await fetch('/api/next-turn', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chosen_action_references: [
+            ...currentState.turnChoices.big_actions.map((a) => a.name),
+            ...currentState.turnChoices.small_actions.map((a) => a.name),
+            reaction_id,
+          ],
+          state_id: currentState.id,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `Failed to proceed to next turn: ${response.statusText}`,
+        );
+      }
+
+      const data = await response.json();
+
+      set({
+        ...data,
+        parameterModifications: data.parameters,
+        isLoading: false,
+        error: null,
+        remainingTime: 10,
+        availableTime: 10,
+        committedUsedTime: 0,
+      });
+    } catch (error) {
+      set({
+        isLoading: false,
+        error:
+          error instanceof Error ? error.message : 'Unknown error occurred',
+      });
     }
-
-    const data = await response.json();
-
-    set({
-      ...data,
-      parameterModifications: data.parameters,
-      isLoading: false,
-      error: null,
-      remainingTime: 10,
-      availableTime: 10,
-      committedUsedTime: 0,
-    });
   },
 
   resetGame: () => {

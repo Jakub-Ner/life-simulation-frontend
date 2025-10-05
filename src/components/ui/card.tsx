@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 
 export interface CardProps {
-  requiredTime: number;
+  requiredTime: number | null;
   imageUrl: string;
   description: string;
   parameterChanges?: {
@@ -53,7 +53,7 @@ const TimeBadge = ({ requiredTime }: { requiredTime: number }) => (
 );
 
 const cardBackImage = '/card-reverse.png';
-const animationDelay = 900; // milliseconds
+const animationDelay = 1200; // milliseconds
 
 const getParameterColor = (value: number) => {
   if (value > 0) return 'text-green-400';
@@ -131,7 +131,7 @@ export const Card = ({
             }}
             className='card-face card-back absolute inset-0 flex flex-col-reverse items-center overflow-hidden rounded-xl border-2 border-teal-700/50 shadow-inner backdrop-blur-sm'
           >
-            {showTimeBadge && <TimeBadge requiredTime={requiredTime} />}
+            {showTimeBadge && <TimeBadge requiredTime={requiredTime || 0} />}
 
             {/* Description */}
             <div className='mt-3 w-full flex-col gap-4 bg-black/20 p-2 backdrop-blur-sm'>

@@ -22,17 +22,6 @@ export function GameplayView() {
     | 'random-event'
   >('turn-init');
 
-  if (gameState.isLoading) {
-    return (
-      <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-950 via-teal-950 to-cyan-950'>
-        <div className='text-center'>
-          <div className='mb-4 animate-pulse text-6xl'>⏳</div>
-          <p className='font-semibold text-2xl text-white'>Ładowanie gry...</p>
-        </div>
-      </div>
-    );
-  }
-
   if (gameState.error) {
     return (
       <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-950 via-teal-950 to-cyan-950'>
@@ -84,7 +73,7 @@ export function GameplayView() {
     console.log('Selected reaction:', reaction);
     gameState.setRandomEventReaction(reaction);
     gameState.applyChangesToParams();
-    await gameState.nextTurn(reaction.id);
+    gameState.nextTurn(reaction.id);
 
     setTimeout(() => {
       setStagePhase('turn-init');

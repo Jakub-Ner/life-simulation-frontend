@@ -1,4 +1,5 @@
 import type React from 'react';
+import { useGameStore } from '~/store/gameStore';
 
 interface TurnInitViewProps {
   description: string;
@@ -13,6 +14,52 @@ const TurnInitView: React.FC<TurnInitViewProps> = ({
   stage,
   onNextAction,
 }) => {
+  const gameState = useGameStore((state) => state);
+  if (gameState.isLoading) {
+    return (
+      <div className='fixed inset-0 z-50 flex items-center justify-center'>
+        <div className='relative flex flex-col items-center'>
+          {/* Outer rotating ring */}
+          <div className='h-48 w-48 animate-spin rounded-full border-8 border-transparent border-t-emerald-500 border-r-teal-500' />
+
+          {/* Middle counter-rotating ring */}
+          <div
+            className='absolute top-4 h-40 w-40 rounded-full border-8 border-transparent border-b-emerald-400 border-l-teal-400'
+            style={{ animation: 'spin 1.5s linear infinite reverse' }}
+          />
+
+          {/* Inner pulsing circle */}
+          <div className='absolute top-12 h-24 w-24 animate-pulse rounded-full bg-gradient-to-br from-emerald-500/30 to-teal-500/30 shadow-[0_0_60px_rgba(16,185,129,0.4)]' />
+
+          {/* Orbiting particles */}
+          <div
+            className='absolute top-0 h-48 w-48 animate-spin'
+            style={{ animationDuration: '3s' }}
+          >
+            <div className='-top-2 -translate-x-1/2 absolute left-1/2 h-4 w-4 rounded-full bg-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.8)]' />
+          </div>
+          <div
+            className='absolute top-0 h-48 w-48'
+            style={{
+              animation: 'spin 2.5s linear infinite',
+              animationDelay: '0.5s',
+            }}
+          >
+            <div className='-translate-y-1/2 absolute top-1/2 left-0 h-3 w-3 rounded-full bg-teal-400 shadow-[0_0_15px_rgba(20,184,166,0.8)]' />
+          </div>
+          <div
+            className='absolute top-0 h-48 w-48'
+            style={{
+              animation: 'spin 2s linear infinite',
+              animationDelay: '1s',
+            }}
+          >
+            <div className='-translate-x-1/2 absolute bottom-0 left-1/2 h-3 w-3 rounded-full bg-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.6)]' />
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className='relative z-10 mx-auto max-w-4xl'>
       <div
