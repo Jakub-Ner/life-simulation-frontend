@@ -1,10 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import NextPhaseArrow from './NextPhaseArrow';
 import TurnInitView from './TurnInitView';
 import AvatarsContainer from './avatars/AvatarsContainer';
-import LifeBar from './ui/LifeBar';
 import VerticalProgressBars from './ui/progress/progress-bars';
 import './GameplayView.css';
 import { useGameStore } from '~/store/gameStore';
@@ -22,17 +20,49 @@ export function GameplayView() {
     | 'random-event'
   >('turn-init');
 
+  // --- Aesthetic Components ---
+  const BackgroundAesthetics = (
+    // Set to -z-10 to be behind everything else
+    <div className='-z-10 absolute inset-0 bg-gradient-to-br from-emerald-950 via-teal-950 to-cyan-950'>
+      {/* Animated background particles from OnboardingView */}
+      <div className='pointer-events-none absolute inset-0 overflow-hidden'>
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className='absolute h-2 w-2 animate-pulse rounded-full bg-teal-500/30'
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${2 + Math.random() * 3}s`,
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+
+  // --- Error View (Aesthetic Maintained) ---
   if (gameState.error) {
     return (
-      <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-950 via-teal-950 to-cyan-950'>
-        <div className='max-w-md rounded-2xl border border-red-500/50 bg-red-900/30 p-8 text-center'>
-          <div className='mb-4 text-6xl'>❌</div>
-          <h2 className='mb-2 font-bold text-2xl text-white'>Wystąpił błąd</h2>
-          <p className='text-red-200'>{gameState.error}</p>
+      <div className='relative flex min-h-screen items-center justify-center'>
+        {BackgroundAesthetics}
+        <div className='relative z-10 max-w-md rounded-2xl border-2 border-red-500/50 bg-red-900/40 p-10 text-center shadow-[0_0_30px_rgba(220,38,38,0.4)]'>
+          <div className='mb-6 animate-pulse text-7xl'>🚨</div>
+          <h2 className='mb-3 font-bold text-3xl text-red-200'>
+            Wystąpił krytyczny błąd
+          </h2>
+          <p className='font-mono text-red-300 text-sm leading-relaxed'>
+            {gameState.error}
+          </p>
+          <p className='mt-4 text-red-400 text-sm'>
+            Spróbuj odświeżyć stronę lub skontaktować się z pomocą.
+          </p>
         </div>
       </div>
     );
   }
+  // --- End Error View ---
 
   const handleNextPhase = () => {
     if (stagePhase === 'turn-init') {
@@ -81,41 +111,56 @@ export function GameplayView() {
   };
 
   return (
-    <div className='relative flex min-h-screen overflow-hidden'>
-      <AvatarsContainer />
-      <SegmentLifeBar />
-      <VerticalProgressBars />
-      <div className='phase-content-container flex w-full items-center justify-center'>
-        {stagePhase === 'turn-init' && (
-          <TurnInitView
-            description={gameState.turn_description}
-            age={gameState.age}
-            stage={gameState.current_stage}
-            onNextAction={handleNextPhase}
-          />
-        )}
-        {stagePhase === 'big-action-decision' && (
-          <ActionDecisionView
-            actions={gameState.big_actions}
-            title='Wybierz swoją wielką decyzję'
-            onActionSelected={handleBigActionSelected}
-            allowSkip={false}
-          />
-        )}
-        {stagePhase === 'small-actions-decision' && (
-          <ActionMultipleDecisionView
-            actions={gameState.small_actions}
-            title='Wybierz małe akcje'
-            onActionsConfirmed={handleSmallActionsConfirmed}
-            allowSkip={false}
-          />
-        )}
-        {stagePhase === 'random-event' && gameState.random_event && (
-          <RandomEventView
-            event={gameState.random_event}
-            onReactionSelected={handleRandomEventReactionSelected}
-          />
-        )}
+    // Removed 'flex' from outer container for cleaner layering of absolute elements
+    <div className='relative min-h-screen overflow-hidden'>
+      {/* 1. Background Layer: Behind everything (-z-10) */}
+      {BackgroundAesthetics}
+
+      {/* 2. HUD Layer: On top of everything (z-30) */}
+      <div className='pointer-events-none absolute inset-0 z-30'>
+        {/* Components must use 'pointer-events-auto' internally if they need interaction */}
+        <AvatarsContainer />
+        <SegmentLifeBar />
+        <VerticalProgressBars />
+      </div>
+
+      {/* 3. Main Phase Content Layer: Intermediate layer (z-20) */}
+      <div
+        className='relative z-20 flex w-full items-center justify-center p-4'
+        style={{ marginTop: '10vh' }}
+      >
+        <div key={stagePhase}>
+          {stagePhase === 'turn-init' && (
+            <TurnInitView
+              description={gameState.turn_description}
+              age={gameState.age}
+              stage={gameState.current_stage}
+              onNextAction={handleNextPhase}
+            />
+          )}
+          {stagePhase === 'big-action-decision' && (
+            <ActionDecisionView
+              actions={gameState.big_actions}
+              title='Wybierz swoją wielką decyzję'
+              onActionSelected={handleBigActionSelected}
+              allowSkip={false}
+            />
+          )}
+          {stagePhase === 'small-actions-decision' && (
+            <ActionMultipleDecisionView
+              actions={gameState.small_actions}
+              title='Wybierz małe akcje'
+              onActionsConfirmed={handleSmallActionsConfirmed}
+              allowSkip={false}
+            />
+          )}
+          {stagePhase === 'random-event' && gameState.random_event && (
+            <RandomEventView
+              event={gameState.random_event}
+              onReactionSelected={handleRandomEventReactionSelected}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
