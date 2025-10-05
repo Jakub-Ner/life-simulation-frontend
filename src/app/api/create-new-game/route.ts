@@ -148,7 +148,40 @@ const mockGameState = {
 };
 
 export async function POST(request: NextRequest) {
-  return NextResponse.json(mockGameState);
+  // return NextResponse.json(mockGameState);
+  try {
+    const body = await request.json();
+
+    const response = await fetch(`${process.env.BACKEND_URL}/create-new-game`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        X_API_KEY: `${process.env.X_API_KEY}`,
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      return NextResponse.json(
+        { error: `Backend error: ${errorText}` },
+        { status: response.status },
+      );
+    }
+
+    const data = await response.json();
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error('Error creating new game:', error);
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error ? error.message : 'Unknown error occurred',
+      },
+      { status: 500 },
+    );
+  }
+>>>>>>> ac6d023 (random action view)
 }
 
 export async function OPTIONS() {

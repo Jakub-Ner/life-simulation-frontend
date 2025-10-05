@@ -1,8 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { ActionDecisionView, type GameAction } from './ActionDecisionView';
-import { ActionMultipleDecisionView } from './ActionMultipleDecisionView';
 import NextPhaseArrow from './NextPhaseArrow';
 import TurnInitView from './TurnInitView';
 import AvatarsContainer from './avatars/AvatarsContainer';
@@ -10,6 +8,9 @@ import LifeBar from './ui/LifeBar';
 import VerticalProgressBars from './ui/progress/progress-bars';
 import './GameplayView.css';
 import { useGameStore } from '~/store/gameStore';
+import { ActionDecisionView, type GameAction } from './ActionDecisionView';
+import { ActionMultipleDecisionView } from './ActionMultipleDecisionView';
+import { type RandomEventReaction, RandomEventView } from './RandomEventView';
 
 export function GameplayView() {
   const gameState = useGameStore();
@@ -85,6 +86,16 @@ export function GameplayView() {
     }, 1100); // Wait for shatter animation (1000ms) + buffer
   };
 
+  const handleRandomEventReactionSelected = (reaction: RandomEventReaction) => {
+    // TODO: Send reaction to backend and proceed to next turn
+    console.log('Selected reaction:', reaction);
+    // For now, just log the selection
+    setTimeout(() => {
+      // This is where you would transition to the next turn
+      // setStagePhase('turn-init');
+    }, 1100);
+  };
+
   return (
     <div className='relative flex min-h-screen overflow-hidden'>
       <AvatarsContainer />
@@ -115,6 +126,12 @@ export function GameplayView() {
             title='Wybierz małe akcje'
             onActionsConfirmed={handleSmallActionsConfirmed}
             allowSkip={false}
+          />
+        )}
+        {stagePhase === 'random-event' && gameState.random_event && (
+          <RandomEventView
+            event={gameState.random_event}
+            onReactionSelected={handleRandomEventReactionSelected}
           />
         )}
       </div>
