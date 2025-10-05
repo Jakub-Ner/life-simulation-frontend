@@ -83,7 +83,9 @@ export function GameplayView() {
     }, 1100); // Wait for shatter animation (1000ms) + buffer
   };
 
-  const handleRandomEventReactionSelected = async (reaction: RandomEventReaction) => {
+  const handleRandomEventReactionSelected = async (
+    reaction: RandomEventReaction,
+  ) => {
     // TODO: Send reaction to backend and proceed to next turn
     console.log('Selected reaction:', reaction);
     gameState.setRandomEventReaction(reaction);

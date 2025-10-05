@@ -163,7 +163,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         chosen_action_references: [
           ...currentState.turnChoices.big_actions.map((a) => a.name),
           ...currentState.turnChoices.small_actions.map((a) => a.name),
-          reaction_id
+          reaction_id,
         ],
         state_id: currentState.id,
       }),
