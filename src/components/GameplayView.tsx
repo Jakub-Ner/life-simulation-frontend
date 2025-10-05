@@ -11,6 +11,7 @@ import { useGameStore } from '~/store/gameStore';
 import { ActionDecisionView, type GameAction } from './ActionDecisionView';
 import { ActionMultipleDecisionView } from './ActionMultipleDecisionView';
 import { type RandomEventReaction, RandomEventView } from './RandomEventView';
+import SegmentLifeBar from './ui/SegmentLifeBar';
 
 export function GameplayView() {
   const gameState = useGameStore();
@@ -100,7 +101,7 @@ export function GameplayView() {
   return (
     <div className='relative flex min-h-screen overflow-hidden'>
       <AvatarsContainer />
-      <LifeBar />
+      <SegmentLifeBar />
       <VerticalProgressBars />
       <NextPhaseArrow onClick={handleNextPhase} />
       <div className='phase-content-container flex w-full items-center justify-center'>
