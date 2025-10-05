@@ -232,7 +232,7 @@ export async function POST(request: NextRequest) {
   //     resolve(NextResponse.json(mockGameState));
   //   }, 200);
   // });
-  //
+
   try {
     const body = await request.json();
 

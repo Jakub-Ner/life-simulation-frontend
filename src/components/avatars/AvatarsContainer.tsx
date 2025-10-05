@@ -100,7 +100,7 @@ const AvatarsContainer: React.FC = () => {
   }
 
   return (
-    <div className='avatars-container shadow'>
+    <div className='avatars-container overflow-clip shadow'>
       {avatars.map((avatar, index) => (
         <Avatar key={`${avatar.age}-${avatar.gender}-${index}`} {...avatar} />
       ))}
