@@ -23,9 +23,10 @@ interface GameAction {
 }
 
 interface RandomEventReaction {
-  name: string;
   description: string;
+  image_url: string;
   parameter_change: ParameterChange;
+  result: string;
 }
 
 interface RandomEvent {
