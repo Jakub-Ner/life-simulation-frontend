@@ -21,7 +21,6 @@ export function GameplayView() {
     | 'small-actions-decision'
     | 'random-event'
   >('turn-init');
-  const [availableTime, setAvailableTime] = useState(10);
 
   if (gameState.isLoading) {
     return (
@@ -58,7 +57,6 @@ export function GameplayView() {
 
   const handleBigActionSelected = (action: GameAction | null) => {
     if (action) {
-      setAvailableTime((prev) => prev - action.time_cost);
       gameState.addBigAction(action);
       gameState.applyChangesToParams();
     }
@@ -68,11 +66,6 @@ export function GameplayView() {
   };
 
   const handleSmallActionsConfirmed = (actions: GameAction[]) => {
-    const totalTimeCost = actions.reduce(
-      (sum, action) => sum + action.time_cost,
-      0,
-    );
-    setAvailableTime((prev) => prev - totalTimeCost);
     for (const action of actions) {
       gameState.addSmallAction(action);
     }
@@ -103,19 +96,18 @@ export function GameplayView() {
       <AvatarsContainer />
       <SegmentLifeBar />
       <VerticalProgressBars />
-      <NextPhaseArrow onClick={handleNextPhase} />
       <div className='phase-content-container flex w-full items-center justify-center'>
         {stagePhase === 'turn-init' && (
           <TurnInitView
             description={gameState.turn_description}
             age={gameState.age}
             stage={gameState.current_stage}
+            onNextAction={handleNextPhase}
           />
         )}
         {stagePhase === 'big-action-decision' && (
           <ActionDecisionView
             actions={gameState.big_actions}
-            availableTime={availableTime}
             title='Wybierz swoją wielką decyzję'
             onActionSelected={handleBigActionSelected}
             allowSkip={false}
@@ -124,7 +116,6 @@ export function GameplayView() {
         {stagePhase === 'small-actions-decision' && (
           <ActionMultipleDecisionView
             actions={gameState.small_actions}
-            availableTime={availableTime}
             title='Wybierz małe akcje'
             onActionsConfirmed={handleSmallActionsConfirmed}
             allowSkip={false}

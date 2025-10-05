@@ -19,13 +19,11 @@ export interface GameAction {
 
 export function ActionDecisionView({
   actions,
-  availableTime,
   title,
   onActionSelected,
   allowSkip = false,
 }: {
   actions: GameAction[];
-  availableTime: number;
   title: string;
   onActionSelected: (action: GameAction | null) => void;
   allowSkip?: boolean;
@@ -36,12 +34,13 @@ export function ActionDecisionView({
   const [isShatteringView, setIsShatteringView] = useState(false);
   const [cardsExpanded, setCardsExpanded] = useState(false);
 
-  const remainingTime =
-    availableTime - (selectedAction ? selectedAction.time_cost : 0);
-
   useEffect(() => {
     gameStore.resetParameterModificationsToCurrent();
   }, [gameStore.resetParameterModificationsToCurrent]);
+
+  useEffect(() => {
+    gameStore.updateRemainingTime(selectedAction ? selectedAction.time_cost : 0);
+  }, [selectedAction, gameStore.updateRemainingTime]);
 
   useEffect(() => {
     const deltas = selectedAction
@@ -60,15 +59,22 @@ export function ActionDecisionView({
   const handleConfirm = () => {
     if (!selectedAction) return;
 
+    gameStore.updateCommittedUsedTime(selectedAction.time_cost);
+    gameStore.updateRemainingTime(0);
+    const actionToConfirm = selectedAction;
+    setSelectedAction(null);
+
     setIsConfirming(true);
     setIsShatteringView(true);
 
     setTimeout(() => {
-      onActionSelected(selectedAction);
+      onActionSelected(actionToConfirm);
     }, 100);
   };
 
   const handleSkip = () => {
+    gameStore.updateRemainingTime(0);
+
     setIsConfirming(true);
     setIsShatteringView(true);
 
@@ -88,7 +94,7 @@ export function ActionDecisionView({
           <div className='flex items-center gap-2 rounded-full border-2 border-emerald-500 bg-teal-900/40 px-6 py-3 backdrop-blur-sm'>
             <span className='text-2xl'>⏱️</span>
             <span className='font-bold text-white text-xl'>
-              {remainingTime} godz. pozostało
+              {gameStore.remainingTime} godz. pozostało
             </span>
           </div>
         </div>
@@ -98,7 +104,7 @@ export function ActionDecisionView({
       <div className='flex flex-wrap justify-center gap-6'>
         {actions.map((action, idx) => {
           const isSelected = selectedAction?.name === action.name;
-          const canAfford = availableTime >= action.time_cost;
+          const canAfford = gameStore.remainingTime >= action.time_cost;
           const centerIndex = Math.floor(actions.length / 2);
           const offsetFromCenter = idx - centerIndex;
 

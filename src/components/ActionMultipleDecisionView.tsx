@@ -19,13 +19,11 @@ export interface GameAction {
 
 export function ActionMultipleDecisionView({
   actions,
-  availableTime,
   title,
   onActionsConfirmed,
   allowSkip = false,
 }: {
   actions: GameAction[];
-  availableTime: number;
   title: string;
   onActionsConfirmed: (actions: GameAction[]) => void;
   allowSkip?: boolean;
@@ -39,6 +37,14 @@ export function ActionMultipleDecisionView({
   useEffect(() => {
     gameStore.resetParameterModificationsToCurrent();
   }, [gameStore.resetParameterModificationsToCurrent]);
+
+  useEffect(() => {
+    const totalTimeUsed = selectedActions.reduce(
+      (sum, action) => sum + action.time_cost,
+      0,
+    );
+    gameStore.updateRemainingTime(totalTimeUsed);
+  }, [selectedActions, gameStore.updateRemainingTime]);
 
   useEffect(() => {
     const deltas = selectedActions.reduce(
@@ -60,11 +66,7 @@ export function ActionMultipleDecisionView({
     return () => clearTimeout(timer);
   }, []);
 
-  const totalTimeUsed = selectedActions.reduce(
-    (sum, action) => sum + action.time_cost,
-    0,
-  );
-  const remainingTime = availableTime - totalTimeUsed;
+
 
   const handleCardClick = (action: GameAction) => {
     if (isConfirming) return;
@@ -78,22 +80,30 @@ export function ActionMultipleDecisionView({
       setSelectedActions(selectedActions.filter((a) => a.name !== action.name));
     } else {
       // Check if user can afford this action
-      if (remainingTime >= action.time_cost) {
+      if (gameStore.remainingTime >= action.time_cost) {
         setSelectedActions([...selectedActions, action]);
       }
     }
   };
 
   const handleConfirm = () => {
+    const totalCost = selectedActions.reduce((sum, action) => sum + action.time_cost, 0);
+    gameStore.updateCommittedUsedTime(totalCost);
+    gameStore.updateRemainingTime(0);
+    const actionsToConfirm = [...selectedActions];
+    setSelectedActions([]);
+
     setIsConfirming(true);
     setIsShatteringView(true);
 
     setTimeout(() => {
-      onActionsConfirmed(selectedActions);
+      onActionsConfirmed(actionsToConfirm);
     }, 100);
   };
 
   const handleSkip = () => {
+    gameStore.updateRemainingTime(0);
+
     setIsConfirming(true);
     setIsShatteringView(true);
 
@@ -113,7 +123,7 @@ export function ActionMultipleDecisionView({
           <div className='flex items-center gap-2 rounded-full border-2 border-emerald-500 bg-teal-900/40 px-6 py-3 backdrop-blur-sm'>
             <span className='text-2xl'>⏱️</span>
             <span className='font-bold text-white text-xl'>
-              {remainingTime} godz. pozostało
+              {gameStore.remainingTime} godz. pozostało
             </span>
           </div>
           {selectedActions.length > 0 && (
@@ -133,7 +143,7 @@ export function ActionMultipleDecisionView({
           const isSelected = selectedActions.some(
             (a) => a.name === action.name,
           );
-          const canAfford = remainingTime >= action.time_cost;
+          const canAfford = gameStore.remainingTime >= action.time_cost;
           const centerIndex = Math.floor(actions.length / 2);
           const offsetFromCenter = idx - centerIndex;
 

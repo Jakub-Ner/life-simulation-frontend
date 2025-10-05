@@ -57,6 +57,9 @@ interface GameState {
     random_event_reaction: RandomEventReaction | null;
   };
   gamePhase: 'landing' | 'onboarding' | 'gameplay' | 'gameover';
+  availableTime: number;
+  remainingTime: number;
+  committedUsedTime: number;
 }
 
 interface GameStore extends GameState {
@@ -71,6 +74,9 @@ interface GameStore extends GameState {
   applyChangesToParams: () => void;
   resetParameterModificationsToCurrent: () => void;
   setGamePhase: (phase: GameState['gamePhase']) => void;
+  setTurnTime: (availableTime: number) => void;
+  updateRemainingTime: (usedTime: number) => void;
+  updateCommittedUsedTime: (delta: number) => void;
 }
 
 const initialState: GameState = {
@@ -104,6 +110,9 @@ const initialState: GameState = {
   isLoading: false,
   error: null,
   gamePhase: 'landing',
+  availableTime: 10,
+  remainingTime: 10,
+  committedUsedTime: 0,
 };
 
 export const useGameStore = create<GameStore>((set, get) => ({
@@ -142,6 +151,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         age: data.age,
         isLoading: false,
         error: null,
+        committedUsedTime: 0,
       });
     } catch (error) {
       set({
@@ -177,8 +187,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     set({
       ...data,
+      parameterModifications: data.parameters,
       isLoading: false,
       error: null,
+      remainingTime: 10,
+      availableTime: 10,
+      committedUsedTime: 0,
     });
   },
 
@@ -215,10 +229,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
   tempSetParameterModifications: (deltas) =>
     set((state) => ({
       parameterModifications: {
-        career: Math.max(0, state.parameters.career + deltas.career),
-        relations: Math.max(0, state.parameters.relations + deltas.relations),
-        health: Math.max(0, state.parameters.health + deltas.health),
-        money: Math.max(0, state.parameters.money + deltas.money),
+        career: Math.min(100, Math.max(0, state.parameters.career + deltas.career)),
+        relations: Math.min(100, Math.max(0, state.parameters.relations + deltas.relations)),
+        health: Math.min(100, Math.max(0, state.parameters.health + deltas.health)),
+        money: Math.min(100, Math.max(0, state.parameters.money + deltas.money)),
       },
     })),
 
@@ -239,4 +253,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
     })),
 
   setGamePhase: (phase) => set({ gamePhase: phase }),
+
+  setTurnTime: (availableTime) => set({ availableTime, remainingTime: availableTime }),
+
+  updateRemainingTime: (usedTime) =>
+    set((state) => ({ remainingTime: state.availableTime - state.committedUsedTime - usedTime })),
+
+  updateCommittedUsedTime: (delta) =>
+    set((state) => ({ committedUsedTime: state.committedUsedTime + delta })),
 }));
