@@ -61,7 +61,7 @@ const TurnInitView: React.FC<TurnInitViewProps> = ({
     );
   }
   return (
-    <div className='relative z-10 mx-auto max-w-4xl'>
+    <div className='relative z-10 mx-auto max-w-4xl' style={{ marginTop: '-18vh' }}>
       <div
         style={{
           backgroundColor: '#00993F',
@@ -69,7 +69,8 @@ const TurnInitView: React.FC<TurnInitViewProps> = ({
           padding: '2rem',
           borderRadius: '0.5rem',
           textAlign: 'center',
-          width: '500px',
+          width: '1200px',
+          maxWidth: '95vw',
           margin: 'auto',
         }}
       >

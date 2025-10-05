@@ -22,9 +22,9 @@ const AvatarsContainer: React.FC = () => {
   const isSick = false;
   const isSpouse = true;
   const hasChild = false;
-  const size = 320;
+  const size = 280;
   const isShadow = false;
-  const baseY = 40;
+  const baseY = 120;
 
   // Matrix of X positions for [main, spouse, child], null if not applicable
   const positionMatrix: Record<PositionKey, (number | null)[]> = {

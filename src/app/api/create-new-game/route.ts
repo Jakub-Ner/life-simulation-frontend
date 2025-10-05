@@ -230,9 +230,9 @@ export async function POST(request: NextRequest) {
   // return new Promise((resolve) => {
   //   setTimeout(() => {
   //     resolve(NextResponse.json(mockGameState));
-  //   }, 2000);
+  //   }, 200);
   // });
-
+  //
   try {
     const body = await request.json();
 
