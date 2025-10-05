@@ -117,7 +117,7 @@ export function ActionMultipleDecisionView({
     <div className='relative z-10 mx-auto max-w-7xl'>
       {/* Header */}
       <div className='fade-in mb-8 animate-in text-center duration-700'>
-        <h6 className='mb-4 bg-gradient-to-r from-emerald-200 via-cyan-200 to-emerald-200 bg-clip-text font-bold text-xl text-transparent'>
+        <h6 className='mb-4 bg-gradient-to-r from-emerald-200 via-cyan-200 to-emerald-200 bg-clip-text font-bold text-transparent text-xl'>
           {title}
         </h6>
         <div className='flex items-center justify-center gap-4'>

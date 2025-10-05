@@ -70,7 +70,7 @@ export function RandomEventView({
     <div className='relative z-10 mx-auto max-w-7xl'>
       {/* Event Header */}
       <div className='fade-in mb-12 animate-in text-center duration-700'>
-        <h6 className='mb-6 bg-gradient-to-r from-emerald-200 via-cyan-200 to-emerald-200 bg-clip-text font-bold text-xl text-transparent'>
+        <h6 className='mb-6 bg-gradient-to-r from-emerald-200 via-cyan-200 to-emerald-200 bg-clip-text font-bold text-transparent text-xl'>
           {event.name}
         </h6>
         <p className='mx-auto max-w-2xl text-gray-300 text-xl leading-relaxed'>

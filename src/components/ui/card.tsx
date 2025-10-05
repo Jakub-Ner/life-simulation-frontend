@@ -95,9 +95,9 @@ export const Card = ({
     }
   };
 
-// border: #146a4c
-// background: #eddbb9
-// accents: #084b53
+  // border: #146a4c
+  // background: #eddbb9
+  // accents: #084b53
 
   return (
     <>
@@ -122,47 +122,47 @@ export const Card = ({
           />
 
           {/* Front Side of the Card */}
-          <div 
+          <div
             style={{
               backgroundImage: `url(${imageUrl})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
             }}
-            className='card-face card-back absolute inset-0 flex flex-col-reverse items-center overflow-hidden rounded-xl border-2 border-teal-700/50 shadow-inner backdrop-blur-sm'>
-            {showTimeBadge && <TimeBadge requiredTime={requiredTime} />}  
+            className='card-face card-back absolute inset-0 flex flex-col-reverse items-center overflow-hidden rounded-xl border-2 border-teal-700/50 shadow-inner backdrop-blur-sm'
+          >
+            {showTimeBadge && <TimeBadge requiredTime={requiredTime} />}
 
             {/* Description */}
-            <div className='mt-3 flex-col w-full p-2 gap-4 bg-black/20 backdrop-blur-sm'>
-              <p className='line-clamp-3 text-center font-bold text-gray-100 text-s leading-tight mb-2'>
+            <div className='mt-3 w-full flex-col gap-4 bg-black/20 p-2 backdrop-blur-sm'>
+              <p className='mb-2 line-clamp-3 text-center font-bold text-gray-100 text-s leading-tight'>
                 {description}
               </p>
-                {parameterChanges && (
-              <div className='grid w-full grid-cols-2 gap-1'>
-                {Object.entries(parameterChanges).map(([key, value]) => (
-                  <div
-                    key={key}
-                    className='flex items-center justify-center gap-1 rounded-lg bg-black/40 px-2 py-1'
-                  >
-                    <span className='text-xs'>
-                      {key === 'career' && '💼'}
-                      {key === 'relations' && '❤️'}
-                      {key === 'health' && '🏥'}
-                      {key === 'money' && '💰'}
-                    </span>
-                    <span
-                      className={`font-bold text-xs ${getParameterColor(value)}`}
+              {parameterChanges && (
+                <div className='grid w-full grid-cols-2 gap-1'>
+                  {Object.entries(parameterChanges).map(([key, value]) => (
+                    <div
+                      key={key}
+                      className='flex items-center justify-center gap-1 rounded-lg bg-black/40 px-2 py-1'
                     >
-                      {getParameterIcon(value)} {Math.abs(value)}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
+                      <span className='text-xs'>
+                        {key === 'career' && '💼'}
+                        {key === 'relations' && '❤️'}
+                        {key === 'health' && '🏥'}
+                        {key === 'money' && '💰'}
+                      </span>
+                      <span
+                        className={`font-bold text-xs ${getParameterColor(value)}`}
+                      >
+                        {getParameterIcon(value)} {Math.abs(value)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Parameter changes */}
-
 
             {/* Selection indicator */}
             {isSelected && (
