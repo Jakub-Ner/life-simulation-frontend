@@ -56,6 +56,10 @@ interface GameState {
     big_actions: GameAction[];
     random_event_reaction: RandomEventReaction | null;
   };
+  has_spouse: boolean;
+  has_child: boolean;
+  is_healthy: boolean;
+  is_happy: boolean;
   stage_summary: string | null;
   gamePhase: 'landing' | 'onboarding' | 'gameplay' | 'gameover';
   availableTime: number;
@@ -110,6 +114,10 @@ const initialState: GameState = {
   age: 0,
   isLoading: false,
   error: null,
+  has_spouse: false,
+  has_child: false,
+  is_healthy: true,
+  is_happy: true,
   stage_summary: null,
   gamePhase: 'landing',
   availableTime: 10,
