@@ -8,7 +8,14 @@ type Gender = 'male' | 'female';
 type PositionKey = 'false-false' | 'true-false' | 'true-true' | 'false-true';
 
 const AvatarsContainer: React.FC = () => {
-  const { current_stage, gender: genderFromStore, is_healthy, has_child, has_spouse, is_happy } = useGameStore();
+  const {
+    current_stage,
+    gender: genderFromStore,
+    is_healthy,
+    has_child,
+    has_spouse,
+    is_happy,
+  } = useGameStore();
 
   const ageMap: Record<number, Age> = {
     1: 'YOUNG',
