@@ -16,12 +16,12 @@ const GameOverView: React.FC<GameOverViewProps> = ({
 }) => {
   return (
     <div className='flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-green-900 via-red-900 to-green-900 px-4 py-12'>
-      <div className='max-w-4xl text-center'>
+      <div className='max-w-7xl text-center'>
         <h1 className='mb-4 font-bold text-5xl text-white md:text-7xl'>
           Koniec gry
         </h1>
 
-        <div className='mx-auto mt-8 mb-12 grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-2'>
+        <div className='mx-auto mt-8 mb-12 grid max-w-7xl grid-cols-1 gap-8 md:grid-cols-2'>
           {/* Stats Section */}
           <div className='rounded-lg bg-white/10 p-8 text-left backdrop-blur-sm'>
             <h2 className='mb-4 border-gray-500 border-b pb-2 font-bold text-3xl text-cyan-300'>
