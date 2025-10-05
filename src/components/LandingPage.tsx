@@ -2,13 +2,13 @@
 
 export function LandingPage({ onStart }: { onStart: () => void }) {
   return (
-    <div className='flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 px-4 py-12'>
+    <div className='flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-emerald-600 via-teal-700 to-blue-800 px-4 py-12'>
       <div className='max-w-4xl text-center'>
         {/* Title */}
         <h1 className='mb-6 font-bold text-5xl text-white md:text-7xl'>
           Symulator Życia
         </h1>
-        <p className='mb-4 font-semibold text-2xl text-purple-200 md:text-3xl'>
+        <p className='mb-4 font-semibold text-2xl text-cyan-300 md:text-3xl'>
           Twoje wybory, Twoja historia
         </p>
 
@@ -30,7 +30,7 @@ export function LandingPage({ onStart }: { onStart: () => void }) {
         <button
           type='button'
           onClick={onStart}
-          className='rounded-lg bg-purple-600 px-12 py-4 font-bold text-white text-xl shadow-lg transition-all duration-300 hover:scale-105 hover:bg-purple-700 hover:shadow-2xl'
+          className='rounded-lg bg-emerald-500 px-12 py-4 font-bold text-white text-xl shadow-lg transition-all duration-300 hover:scale-105 hover:bg-emerald-600 hover:shadow-2xl'
         >
           Rozpocznij swoją historię
         </button>

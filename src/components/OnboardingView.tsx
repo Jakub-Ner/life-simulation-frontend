@@ -24,12 +24,12 @@ function SelectionBox({
       onClick={onClick}
       className={`group relative overflow-hidden rounded-2xl border-2 p-8 transition-all duration-500 hover:scale-105 ${
         isSelected
-          ? 'border-purple-400 bg-purple-600/30 shadow-[0_0_30px_rgba(168,85,247,0.4)]'
-          : 'border-purple-800/50 bg-purple-900/20 hover:border-purple-600 hover:bg-purple-800/30'
+          ? 'border-emerald-400 bg-emerald-600/30 shadow-[0_0_30px_rgba(16,185,129,0.4)]'
+          : 'border-teal-800/50 bg-teal-900/20 hover:border-teal-600 hover:bg-teal-800/30'
       }`}
     >
       {/* Animated background gradient */}
-      <div className='absolute inset-0 bg-gradient-to-br from-purple-600/0 via-pink-600/0 to-blue-600/0 opacity-0 transition-opacity duration-500 group-hover:opacity-20' />
+      <div className='absolute inset-0 bg-gradient-to-br from-emerald-600/0 via-teal-600/0 to-cyan-600/0 opacity-0 transition-opacity duration-500 group-hover:opacity-20' />
 
       {/* Content */}
       <div className='relative z-10 flex flex-col items-center gap-4'>
@@ -44,7 +44,7 @@ function SelectionBox({
 
       {/* Selection indicator */}
       {isSelected && (
-        <div className='zoom-in absolute top-4 right-4 flex h-8 w-8 animate-in items-center justify-center rounded-full bg-purple-500'>
+        <div className='zoom-in absolute top-4 right-4 flex h-8 w-8 animate-in items-center justify-center rounded-full bg-emerald-500'>
           <span className='text-white'>✓</span>
         </div>
       )}
@@ -131,13 +131,13 @@ export function OnboardingView({ onComplete }: { onComplete: () => void }) {
   };
 
   return (
-    <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-950 via-purple-950 to-pink-950 px-4 py-12'>
+    <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-950 via-teal-950 to-cyan-950 px-4 py-12'>
       {/* Animated background particles */}
       <div className='pointer-events-none absolute inset-0 overflow-hidden'>
         {[...Array(20)].map((_, i) => (
           <div
             key={i}
-            className='absolute h-2 w-2 animate-pulse rounded-full bg-purple-500/30'
+            className='absolute h-2 w-2 animate-pulse rounded-full bg-teal-500/30'
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -158,10 +158,10 @@ export function OnboardingView({ onComplete }: { onComplete: () => void }) {
               key={s}
               className={`h-3 rounded-full transition-all duration-500 ${
                 step === s
-                  ? 'w-24 bg-purple-500 shadow-[0_0_20px_rgba(168,85,247,0.6)]'
+                  ? 'w-24 bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.6)]'
                   : idx < ['goal', 'gender', 'name'].indexOf(step)
-                    ? 'w-12 bg-purple-700'
-                    : 'w-12 bg-purple-900/50'
+                    ? 'w-12 bg-teal-700'
+                    : 'w-12 bg-teal-900/50'
               }`}
             />
           ))}
@@ -231,7 +231,7 @@ export function OnboardingView({ onComplete }: { onComplete: () => void }) {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder='Wpisz swoje imię...'
-                  className='w-full rounded-2xl border-2 border-purple-600 bg-purple-900/30 px-8 py-6 text-center font-semibold text-2xl text-white placeholder-purple-400 shadow-[0_0_30px_rgba(168,85,247,0.2)] transition-all duration-300 focus:border-purple-400 focus:shadow-[0_0_50px_rgba(168,85,247,0.4)] focus:outline-none'
+                  className='w-full rounded-2xl border-2 border-teal-600 bg-teal-900/30 px-8 py-6 text-center font-semibold text-2xl text-white placeholder-teal-400 shadow-[0_0_30px_rgba(20,184,166,0.2)] transition-all duration-300 focus:border-emerald-400 focus:shadow-[0_0_50px_rgba(16,185,129,0.4)] focus:outline-none'
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && canProceed()) {
                       handleFinish();
@@ -261,7 +261,7 @@ export function OnboardingView({ onComplete }: { onComplete: () => void }) {
                   setIsAnimating(false);
                 }, 300);
               }}
-              className='rounded-xl border-2 border-purple-600 bg-transparent px-8 py-4 font-semibold text-lg text-purple-300 transition-all duration-300 hover:bg-purple-600/20'
+              className='rounded-xl border-2 border-teal-600 bg-transparent px-8 py-4 font-semibold text-lg text-teal-300 transition-all duration-300 hover:bg-teal-600/20'
             >
               ← Wstecz
             </button>
@@ -271,22 +271,22 @@ export function OnboardingView({ onComplete }: { onComplete: () => void }) {
               type='button'
               onClick={handleNext}
               disabled={!canProceed()}
-              className='group relative overflow-hidden rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 px-12 py-4 font-bold text-lg text-white shadow-[0_0_30px_rgba(168,85,247,0.3)] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_50px_rgba(168,85,247,0.5)] disabled:opacity-50 disabled:hover:scale-100'
+              className='group relative overflow-hidden rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-12 py-4 font-bold text-lg text-white shadow-[0_0_30px_rgba(16,185,129,0.3)] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_50px_rgba(16,185,129,0.5)] disabled:opacity-50 disabled:hover:scale-100'
             >
               <span className='relative z-10'>Dalej →</span>
-              <div className='absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-600 opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
+              <div className='absolute inset-0 bg-gradient-to-r from-teal-600 to-emerald-600 opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
             </button>
           ) : (
             <button
               type='button'
               onClick={handleFinish}
               disabled={!canProceed() || isLoading}
-              className='group relative overflow-hidden rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 px-12 py-4 font-bold text-lg text-white shadow-[0_0_30px_rgba(168,85,247,0.3)] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_50px_rgba(168,85,247,0.5)] disabled:opacity-50 disabled:hover:scale-100'
+              className='group relative overflow-hidden rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-12 py-4 font-bold text-lg text-white shadow-[0_0_30px_rgba(16,185,129,0.3)] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_50px_rgba(16,185,129,0.5)] disabled:opacity-50 disabled:hover:scale-100'
             >
               <span className='relative z-10'>
                 {isLoading ? 'Tworzenie gry...' : 'Rozpocznij grę! 🎮'}
               </span>
-              <div className='absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-600 opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
+              <div className='absolute inset-0 bg-gradient-to-r from-teal-600 to-emerald-600 opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
             </button>
           )}
         </div>
