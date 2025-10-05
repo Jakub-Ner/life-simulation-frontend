@@ -25,13 +25,14 @@ const AvatarsContainer: React.FC = () => {
 
   const age = ageMap[current_stage] || 'YOUNG';
   const gender = genderFromStore as Gender;
+
   const isHappy = is_happy;
   const isSick = !is_healthy;
   const isSpouse = has_spouse;
   const hasChild = has_child;
   const size = 320;
   const isShadow = false;
-  const baseY = 40;
+  const baseY = 120;
 
   // Matrix of X positions for [main, spouse, child], null if not applicable
   const positionMatrix: Record<PositionKey, (number | null)[]> = {

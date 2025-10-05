@@ -1,14 +1,14 @@
 .avatars-container {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
   background-color: rgb(0, 134, 18);
-  border: 1rem solid rgb(0, 99, 13);
+  border: 0.75rem solid rgb(0, 99, 13);
   box-sizing: border-box;
   border-radius: 100%;
-  padding: 1rem;
+  padding: 0.75rem;
   position: absolute;
   left: -4rem;
-  bottom: -6rem;
-  width: 25rem;
-  height: 25rem;
+  bottom: -5rem;
+  width: 20rem;
+  height: 20rem;
 }
