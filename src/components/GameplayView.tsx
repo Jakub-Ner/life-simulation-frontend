@@ -24,7 +24,7 @@ export function GameplayView() {
 
   if (gameState.isLoading) {
     return (
-      <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-950 via-purple-950 to-pink-950'>
+      <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-950 via-teal-950 to-cyan-950'>
         <div className='text-center'>
           <div className='mb-4 animate-pulse text-6xl'>⏳</div>
           <p className='font-semibold text-2xl text-white'>Ładowanie gry...</p>
@@ -35,7 +35,7 @@ export function GameplayView() {
 
   if (gameState.error) {
     return (
-      <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-950 via-purple-950 to-pink-950'>
+      <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-950 via-teal-950 to-cyan-950'>
         <div className='max-w-md rounded-2xl border border-red-500/50 bg-red-900/30 p-8 text-center'>
           <div className='mb-4 text-6xl'>❌</div>
           <h2 className='mb-2 font-bold text-2xl text-white'>Wystąpił błąd</h2>

@@ -37,21 +37,22 @@ const customStyles = `
     transform: rotateY(180deg);
   }
   .glowing {
-    box-shadow: 0 0 15px 5px rgba(139, 92, 246, 0.7),
-                0 0 30px 10px rgba(139, 92, 246, 0.5);
+    box-shadow: 0 0 15px 5px rgba(16, 185, 129, 0.7),
+                0 0 30px 10px rgba(16, 185, 129, 0.5);
   }
   .selected {
-    box-shadow: 0 0 50px rgba(168, 85, 247, 0.6);
+    box-shadow: 0 0 50px rgba(16, 185, 129, 0.6);
   }
 `;
 
 const TimeBadge = ({ requiredTime }: { requiredTime: number }) => (
-  <div className='absolute top-2 right-2 z-20 rounded-full bg-indigo-600 px-3 py-1 font-bold text-white text-xs shadow-lg'>
+  <div className='absolute top-2 right-2 z-20 rounded-full bg-teal-600 px-3 py-1 font-bold text-white text-xs shadow-lg'>
     ⏱️ {requiredTime}h
   </div>
 );
 
-const cardBackImage = 'https://picsum.photos/210/332?random=1';
+const cardBackImage = '/card-reverse.png';
+const animationDelay = 900; // milliseconds
 
 const getParameterColor = (value: number) => {
   if (value > 0) return 'text-green-400';
@@ -82,7 +83,7 @@ export const Card = ({
     setIsFlipped(false);
     const timer = setTimeout(() => {
       setIsFlipped(true);
-    }, 500);
+    }, animationDelay);
     return () => clearTimeout(timer);
   }, []); // Only run on mount
 
@@ -112,19 +113,14 @@ export const Card = ({
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}
-          >
-            <div className='absolute inset-0 bg-black/60' />
-            <span className='relative z-10 p-4 text-center font-extrabold text-3xl text-white'>
-              The Mystery Card
-            </span>
-          </div>
+          />
 
           {/* Front Side of the Card */}
-          <div className='card-face card-back absolute inset-0 flex flex-col items-center overflow-hidden rounded-xl border-2 border-purple-700/50 bg-gradient-to-br from-purple-900/90 to-indigo-900/90 p-4 shadow-inner backdrop-blur-sm'>
+          <div className='card-face card-back absolute inset-0 flex flex-col items-center overflow-hidden rounded-xl border-2 border-teal-700/50 bg-gradient-to-br from-teal-900/90 to-cyan-900/90 p-4 shadow-inner backdrop-blur-sm'>
             <TimeBadge requiredTime={requiredTime} />
 
             {/* Image */}
-            <div className='mt-6 flex h-2/5 w-full items-center justify-center overflow-hidden rounded-lg border-2 border-purple-600/50'>
+            <div className='mt-6 flex h-2/5 w-full items-center justify-center overflow-hidden rounded-lg border-2 border-emerald-600/50'>
               <img
                 src={imageUrl}
                 alt='Card Visual'
@@ -165,7 +161,7 @@ export const Card = ({
 
             {/* Selection indicator */}
             {isSelected && (
-              <div className='zoom-in -translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 flex h-16 w-16 animate-in items-center justify-center rounded-full bg-purple-500 text-4xl shadow-[0_0_30px_rgba(168,85,247,0.8)]'>
+              <div className='zoom-in -translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 flex h-16 w-16 animate-in items-center justify-center rounded-full bg-emerald-500 text-4xl shadow-[0_0_30px_rgba(16,185,129,0.8)]'>
                 ✓
               </div>
             )}

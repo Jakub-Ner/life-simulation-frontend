@@ -106,11 +106,11 @@ export function ActionMultipleDecisionView({
     <div className='relative z-10 mx-auto max-w-7xl'>
       {/* Header */}
       <div className='fade-in mb-8 animate-in text-center duration-700'>
-        <h2 className='mb-4 bg-gradient-to-r from-purple-200 via-pink-200 to-purple-200 bg-clip-text font-bold text-5xl text-transparent'>
+        <h2 className='mb-4 bg-gradient-to-r from-emerald-200 via-cyan-200 to-emerald-200 bg-clip-text font-bold text-5xl text-transparent'>
           {title}
         </h2>
         <div className='flex items-center justify-center gap-4'>
-          <div className='flex items-center gap-2 rounded-full border-2 border-purple-500 bg-purple-900/40 px-6 py-3 backdrop-blur-sm'>
+          <div className='flex items-center gap-2 rounded-full border-2 border-emerald-500 bg-teal-900/40 px-6 py-3 backdrop-blur-sm'>
             <span className='text-2xl'>⏱️</span>
             <span className='font-bold text-white text-xl'>
               {remainingTime} godz. pozostało
@@ -178,7 +178,7 @@ export function ActionMultipleDecisionView({
           <button
             type='button'
             onClick={handleSkip}
-            className='group relative overflow-hidden rounded-2xl border-2 border-purple-600 bg-transparent px-8 py-4 font-bold text-lg text-purple-300 shadow-[0_0_30px_rgba(168,85,247,0.3)] transition-all duration-300 hover:scale-105 hover:bg-purple-600/20'
+            className='group relative overflow-hidden rounded-2xl border-2 border-teal-600 bg-transparent px-8 py-4 font-bold text-lg text-teal-300 shadow-[0_0_30px_rgba(20,184,166,0.3)] transition-all duration-300 hover:scale-105 hover:bg-teal-600/20'
           >
             Pomiń ⏭️
           </button>
@@ -189,9 +189,9 @@ export function ActionMultipleDecisionView({
             type='button'
             onClick={handleConfirm}
             disabled={selectedActions.length === 0}
-            className='group relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 px-12 py-4 font-bold text-2xl text-white shadow-[0_0_50px_rgba(168,85,247,0.6)] transition-all duration-300 hover:scale-110 hover:shadow-[0_0_80px_rgba(168,85,247,0.8)] disabled:opacity-50 disabled:hover:scale-100'
+            className='group relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 px-12 py-4 font-bold text-2xl text-white shadow-[0_0_50px_rgba(16,185,129,0.6)] transition-all duration-300 hover:scale-110 hover:shadow-[0_0_80px_rgba(16,185,129,0.8)] disabled:opacity-50 disabled:hover:scale-100'
           >
-            <div className='absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-600 opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
+            <div className='absolute inset-0 bg-gradient-to-r from-teal-600 to-emerald-600 opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
             <span className='relative z-10'>
               {selectedActions.length === 0
                 ? 'Wybierz akcje'
